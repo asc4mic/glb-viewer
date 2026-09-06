@@ -4,13 +4,17 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Box, Code2, Cpu, Globe2, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import FileUploader from "../components/FileUploader";
 import SimpleGLBViewer from "../components/SimpleGLBViewer";
 
 const Home = () => {
+  const searchParams = useSearchParams();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [loadedFromQuery, setLoadedFromQuery] = useState(false);
 
   const handleFileSelect = (selectedFile: File | null) => {
+    setLoadedFromQuery(false);
     if (selectedFile) {
       const url = URL.createObjectURL(selectedFile);
       setPreviewUrl(url);
@@ -20,8 +24,16 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const model = searchParams.get("model");
+    if (model) {
+      setLoadedFromQuery(true);
+      setPreviewUrl(model);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
 
@@ -143,6 +155,11 @@ const Home = () => {
                   exit={{ opacity: 0, y: -20, scale: 0.9 }}
                   className="w-full max-w-4xl"
                 >
+                  {loadedFromQuery && (
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-xs font-semibold text-blue-300">
+                      Direkt über Link geladen
+                    </div>
+                  )}
                   <SimpleGLBViewer url={previewUrl} />
                 </motion.div>
               )}
