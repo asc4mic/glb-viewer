@@ -72,7 +72,7 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url }) => {
       <LoadingOverlay />
       <Canvas
         shadows
-        camera={{ position: [0, 0, 4], fov: 45 }}
+        camera={{ position: [8, 5, 8], fov: 45 }}
         gl={{ antialias: true, preserveDrawingBuffer: true }}
       >
         <Suspense fallback={null}>
