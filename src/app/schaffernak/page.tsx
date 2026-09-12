@@ -1,7 +1,18 @@
+import fs from "node:fs";
+import path from "node:path";
 import Link from "next/link";
 import SimpleGLBViewer from "@/src/components/SimpleGLBViewer";
 
+function getVersionedModelUrl() {
+  const filePath = path.join(process.cwd(), "public/models/Schaffernak_Haus.glb");
+  const stats = fs.statSync(filePath);
+  const version = `${stats.size}-${Math.floor(stats.mtimeMs)}`;
+  return `/models/Schaffernak_Haus.glb?v=${version}`;
+}
+
 export default function SchaffernakPage() {
+  const modelUrl = getVersionedModelUrl();
+
   return (
     <main className="min-h-screen bg-[#030712] text-white px-6 py-8">
       <div className="mx-auto max-w-6xl">
@@ -23,7 +34,7 @@ export default function SchaffernakPage() {
           </Link>
         </div>
 
-        <SimpleGLBViewer url="/models/Schaffernak_Haus.glb" />
+        <SimpleGLBViewer url={modelUrl} />
       </div>
     </main>
   );
