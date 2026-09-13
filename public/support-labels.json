@@ -848,22 +848,6 @@
     ]
   },
   {
-    "id": "S54",
-    "name": "Entwurf_Wandseitige_Stuetze_Balkon_BV1",
-    "group": "Entwurf",
-    "color": "#57626b",
-    "position": [
-      -2.8998,
-      1.2375,
-      2.9
-    ],
-    "native_center": [
-      -2.89984,
-      -2.9,
-      1.2375
-    ]
-  },
-  {
     "id": "S55",
     "name": "Entwurf_Wandseitige_Stuetze_Balkon_vorne_BV2",
     "group": "Entwurf",
