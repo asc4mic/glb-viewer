@@ -1150,5 +1150,21 @@
       0.6462,
       -1.535
     ]
+  },
+  {
+    "id": "S77",
+    "name": "Entwurf_Dachstuetze_2",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -2.7468,
+      1.25,
+      2.9
+    ],
+    "native_center": [
+      -2.74684,
+      -2.9,
+      1.25
+    ]
   }
 ]
