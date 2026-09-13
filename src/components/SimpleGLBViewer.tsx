@@ -9,17 +9,54 @@ import {
   Center,
   Environment,
   useProgress,
+  Html,
 } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { SimpleGLBViewerProps } from "../types";
 
+type SupportLabel = {
+  id: string;
+  name: string;
+  group: string;
+  color: string;
+  position: [number, number, number];
+};
+
 const Model = ({ url }: { url: string }) => {
   const { scene } = useGLTF(url);
+  const [labels, setLabels] = useState<SupportLabel[]>([]);
+
+  useEffect(() => {
+    fetch("/support-labels.json")
+      .then((response) => response.json())
+      .then((value: SupportLabel[]) => setLabels(value))
+      .catch(() => setLabels([]));
+  }, []);
 
   return (
     <Center>
       <primitive object={scene} />
+      {labels.map((label) => (
+        <Html key={label.id} position={label.position} center distanceFactor={8} style={{ pointerEvents: "none" }}>
+          <span
+            title={label.name}
+            style={{
+              color: "#ffffff",
+              background: "rgba(3, 7, 18, .78)",
+              border: `1px solid ${label.color}`,
+              borderRadius: 4,
+              padding: "1px 3px",
+              fontSize: 9,
+              lineHeight: 1,
+              fontFamily: "ui-monospace, SFMono-Regular, monospace",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {label.id}
+          </span>
+        </Html>
+      ))}
     </Center>
   );
 };
