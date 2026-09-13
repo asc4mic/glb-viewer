@@ -1,7 +1,7 @@
 [
   {
-    "id": "S01",
-    "name": "Bestand_Stuetzenachse_1",
+    "id": "F01",
+    "name": "Bestand_Stuetzenachse_1 (Fundamentstütze)",
     "group": "Beton",
     "color": "#a7aba9",
     "position": [
@@ -16,8 +16,8 @@
     ]
   },
   {
-    "id": "S02",
-    "name": "Bestand_Stuetzenachse_3",
+    "id": "F02",
+    "name": "Bestand_Stuetzenachse_3 (Fundamentstütze)",
     "group": "Beton",
     "color": "#a7aba9",
     "position": [
