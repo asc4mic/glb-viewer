@@ -48,8 +48,8 @@
     ]
   },
   {
-    "id": "S04",
-    "name": "Bestand_Stuetzenachse_5",
+    "id": "W01",
+    "name": "Bestand_Stuetzenachse_5 (integrierte Stützwand)",
     "group": "Beton",
     "color": "#a7aba9",
     "position": [
@@ -909,6 +909,22 @@
       -2.9,
       -0.1,
       1.2375
+    ]
+  },
+  {
+    "id": "S58",
+    "name": "Entwurf_Dachstuetze_5",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -2.7468,
+      1.25,
+      -0.6462
+    ],
+    "native_center": [
+      -2.7468,
+      0.6462,
+      1.25
     ]
   }
 ]
