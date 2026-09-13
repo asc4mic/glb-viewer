@@ -1,37 +1,5 @@
 [
   {
-    "id": "F01",
-    "name": "Bestand_Stuetzenachse_1 (Fundamentstütze)",
-    "group": "Beton",
-    "color": "#a7aba9",
-    "position": [
-      8.0204,
-      -1.535,
-      2.9
-    ],
-    "native_center": [
-      8.0204,
-      -2.9,
-      -1.535
-    ]
-  },
-  {
-    "id": "F02",
-    "name": "Bestand_Stuetzenachse_3 (Fundamentstütze)",
-    "group": "Beton",
-    "color": "#a7aba9",
-    "position": [
-      -2.7468,
-      -1.535,
-      -4.171
-    ],
-    "native_center": [
-      -2.7468,
-      4.171,
-      -1.535
-    ]
-  },
-  {
     "id": "S03",
     "name": "Bestand_Stuetzenachse_4",
     "group": "Beton",
@@ -44,22 +12,6 @@
     "native_center": [
       2.63676,
       -2.9,
-      -1.535
-    ]
-  },
-  {
-    "id": "W01",
-    "name": "Bestand_Stuetzenachse_5 (integrierte Stützwand)",
-    "group": "Beton",
-    "color": "#a7aba9",
-    "position": [
-      -2.7468,
-      -1.535,
-      -0.6462
-    ],
-    "native_center": [
-      -2.7468,
-      0.6462,
       -1.535
     ]
   },
@@ -1133,6 +1085,70 @@
       8.02035,
       -1.19,
       1.25
+    ]
+  },
+  {
+    "id": "S76",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_vorne_gegenueber_S50",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      3.2,
+      1.2375,
+      2.9
+    ],
+    "native_center": [
+      3.2,
+      -2.9,
+      1.2375
+    ]
+  },
+  {
+    "id": "F01",
+    "name": "Bestand_Stuetzenachse_1 (Fundamentstütze)",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      8.0204,
+      -1.535,
+      2.9
+    ],
+    "native_center": [
+      8.0204,
+      -2.9,
+      -1.535
+    ]
+  },
+  {
+    "id": "F02",
+    "name": "Bestand_Stuetzenachse_3 (Fundamentstütze)",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      -2.7468,
+      -1.535,
+      -4.171
+    ],
+    "native_center": [
+      -2.7468,
+      4.171,
+      -1.535
+    ]
+  },
+  {
+    "id": "W01",
+    "name": "Bestand_Stuetzenachse_5 (integrierte Stützwand)",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      -2.7468,
+      -1.535,
+      -0.6462
+    ],
+    "native_center": [
+      -2.7468,
+      0.6462,
+      -1.535
     ]
   }
 ]
