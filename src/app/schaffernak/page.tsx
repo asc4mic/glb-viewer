@@ -14,6 +14,7 @@ export default function SchaffernakPage() {
   const variants = [
     { id: "A", label: "A · 8 Stützen", url: "/models/Schaffernak_Haus_A.glb", labelsUrl: "/support-labels_A.json" },
     { id: "B", label: "B · 8 Stützen / 8 cm", url: "/models/Schaffernak_Haus_B.glb", labelsUrl: "/support-labels_B.json" },
+    { id: "C", label: "C · 8 Stützen / 10 cm", url: "/models/Schaffernak_Haus_C.glb", labelsUrl: "/support-labels_C.json" },
   ];
 
   return (
