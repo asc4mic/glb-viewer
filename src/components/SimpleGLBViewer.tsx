@@ -134,7 +134,7 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url, variants = [] })
         <select
           value={variantId}
           onChange={(event) => setVariantId(event.target.value)}
-          className="absolute top-6 right-44 rounded-full border border-white/15 bg-black/70 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur-xl"
+          className="absolute bottom-6 right-44 rounded-full border border-white/15 bg-black/70 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur-xl"
           aria-label="Modellvariante"
         >
           {variants.map((variant) => (
@@ -148,7 +148,7 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url, variants = [] })
       <button
         type="button"
         onClick={() => setShowLabels((visible) => !visible)}
-        className="absolute top-6 right-6 rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur-xl transition hover:bg-white/15"
+        className="absolute bottom-6 right-6 rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur-xl transition hover:bg-white/15"
         aria-pressed={showLabels}
       >
         Labels: {showLabels ? "anzeigen" : "ausblenden"}
