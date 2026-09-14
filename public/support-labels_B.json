@@ -1013,13 +1013,13 @@
     "group": "Holz",
     "color": "#cbb58c",
     "position": [
-      -2.9298,
+      9.08,
       1.25,
-      1.19
+      -8.95
     ],
     "native_center": [
-      -2.92984,
-      -1.19,
+      9.08,
+      8.95,
       1.25
     ]
   },
@@ -1029,13 +1029,13 @@
     "group": "Holz",
     "color": "#cbb58c",
     "position": [
-      -2.9298,
+      9.08,
       1.25,
-      0.84
+      -8.81
     ],
     "native_center": [
-      -2.92984,
-      -0.84,
+      9.08,
+      8.81,
       1.25
     ]
   },
@@ -1045,13 +1045,13 @@
     "group": "Holz",
     "color": "#cbb58c",
     "position": [
-      -2.9298,
+      9.08,
       1.25,
-      0.49
+      -8.67
     ],
     "native_center": [
-      -2.92984,
-      -0.49,
+      9.08,
+      8.67,
       1.25
     ]
   },
@@ -1061,13 +1061,13 @@
     "group": "Holz",
     "color": "#cbb58c",
     "position": [
-      -2.9298,
+      9.08,
       1.25,
-      0.14
+      -8.53
     ],
     "native_center": [
-      -2.92984,
-      -0.14,
+      9.08,
+      8.53,
       1.25
     ]
   },
@@ -1175,17 +1175,33 @@
     "position": [
       9.08,
       1.25,
-      -8.95
+      -9.05
     ],
     "native_center": [
       9.08,
-      8.95,
+      9.05,
       1.25
     ]
   },
   {
     "id": "S79",
     "name": "Entwurf_Holzstuetze_Eingang_6",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      9.08,
+      1.25,
+      -8.93
+    ],
+    "native_center": [
+      9.08,
+      8.93,
+      1.25
+    ]
+  },
+  {
+    "id": "S80",
+    "name": "Entwurf_Holzstuetze_Eingang_7",
     "group": "Holz",
     "color": "#cbb58c",
     "position": [
@@ -1200,22 +1216,6 @@
     ]
   },
   {
-    "id": "S80",
-    "name": "Entwurf_Holzstuetze_Eingang_7",
-    "group": "Holz",
-    "color": "#cbb58c",
-    "position": [
-      9.08,
-      1.25,
-      -8.67
-    ],
-    "native_center": [
-      9.08,
-      8.67,
-      1.25
-    ]
-  },
-  {
     "id": "S81",
     "name": "Entwurf_Holzstuetze_Eingang_8",
     "group": "Holz",
@@ -1223,11 +1223,11 @@
     "position": [
       9.08,
       1.25,
-      -8.53
+      -8.69
     ],
     "native_center": [
       9.08,
-      8.53,
+      8.69,
       1.25
     ]
   }
