@@ -154,12 +154,6 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url, variants = [] })
         Labels: {showLabels ? "anzeigen" : "ausblenden"}
       </button>
 
-      {/* Label/Overlay */}
-      <div className="absolute top-6 left-6 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full backdrop-blur-xl">
-        <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
-          3D Preview
-        </span>
-      </div>
     </div>
   );
 };
