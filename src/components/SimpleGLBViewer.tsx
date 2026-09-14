@@ -23,7 +23,7 @@ type SupportLabel = {
   position: [number, number, number];
 };
 
-const Model = ({ url }: { url: string }) => {
+const Model = ({ url, showLabels }: { url: string; showLabels: boolean }) => {
   const { scene } = useGLTF(url);
   const [labels, setLabels] = useState<SupportLabel[]>([]);
 
@@ -37,7 +37,7 @@ const Model = ({ url }: { url: string }) => {
   return (
     <Center>
       <primitive object={scene} />
-      {labels.map((label) => (
+      {showLabels && labels.map((label) => (
         <Html key={label.id} position={label.position} center distanceFactor={8} style={{ pointerEvents: "none" }}>
           <span
             title={label.name}
@@ -104,6 +104,8 @@ function LoadingOverlay() {
 }
 
 const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url }) => {
+  const [showLabels, setShowLabels] = useState(true);
+
   return (
     <div className="w-full h-[400px] md:h-[500px] bg-black/40 backdrop-blur-3xl rounded-[40px] border border-white/10 overflow-hidden relative shadow-2xl">
       <LoadingOverlay />
@@ -119,12 +121,21 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url }) => {
             adjustCamera={false}
             shadows="contact"
           >
-            <Model url={url} />
+            <Model url={url} showLabels={showLabels} />
           </Stage>
           <OrbitControls makeDefault enablePan={true} enableZoom={true} />
           <Environment preset="apartment" />
         </Suspense>
       </Canvas>
+
+      <button
+        type="button"
+        onClick={() => setShowLabels((visible) => !visible)}
+        className="absolute top-6 right-6 rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur-xl transition hover:bg-white/15"
+        aria-pressed={showLabels}
+      >
+        Labels: {showLabels ? "anzeigen" : "ausblenden"}
+      </button>
 
       {/* Label/Overlay */}
       <div className="absolute top-6 left-6 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full backdrop-blur-xl">
