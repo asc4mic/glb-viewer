@@ -23,16 +23,16 @@ type SupportLabel = {
   position: [number, number, number];
 };
 
-const Model = ({ url, showLabels }: { url: string; showLabels: boolean }) => {
+const Model = ({ url, labelsUrl, showLabels }: { url: string; labelsUrl: string; showLabels: boolean }) => {
   const { scene } = useGLTF(url);
   const [labels, setLabels] = useState<SupportLabel[]>([]);
 
   useEffect(() => {
-    fetch("/support-labels.json")
+    fetch(labelsUrl)
       .then((response) => response.json())
       .then((value: SupportLabel[]) => setLabels(value))
       .catch(() => setLabels([]));
-  }, []);
+  }, [labelsUrl]);
 
   return (
     <Center>
@@ -107,6 +107,7 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url, variants = [] })
   const [showLabels, setShowLabels] = useState(true);
   const [variantId, setVariantId] = useState(variants[0]?.id ?? "default");
   const activeUrl = variants.find((variant) => variant.id === variantId)?.url ?? url;
+  const activeLabelsUrl = variants.find((variant) => variant.id === variantId)?.labelsUrl ?? "/support-labels.json";
 
   return (
     <div className="w-full h-[400px] md:h-[500px] bg-black/40 backdrop-blur-3xl rounded-[40px] border border-white/10 overflow-hidden relative shadow-2xl">
@@ -123,7 +124,7 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url, variants = [] })
             adjustCamera={false}
             shadows="contact"
           >
-            <Model url={activeUrl} showLabels={showLabels} />
+            <Model url={activeUrl} labelsUrl={activeLabelsUrl} showLabels={showLabels} />
           </Stage>
           <OrbitControls makeDefault enablePan={true} enableZoom={true} />
           <Environment preset="apartment" />
