@@ -11,7 +11,10 @@ function getVersionedModelUrl() {
 }
 
 export default function SchaffernakPage() {
-  const modelUrl = getVersionedModelUrl();
+  const variants = [
+    { id: "A", label: "Variante A · 8 Holzstützen", url: "/models/Schaffernak_Haus_A.glb" },
+    { id: "B", label: "Variante B · 12 Holzstützen", url: "/models/Schaffernak_Haus_B.glb" },
+  ];
 
   return (
     <main className="min-h-screen bg-[#030712] text-white px-6 py-8">
@@ -34,7 +37,7 @@ export default function SchaffernakPage() {
           </Link>
         </div>
 
-        <SimpleGLBViewer url={modelUrl} />
+        <SimpleGLBViewer url={variants[0].url} variants={variants} />
       </div>
     </main>
   );

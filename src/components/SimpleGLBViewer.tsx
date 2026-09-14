@@ -103,8 +103,10 @@ function LoadingOverlay() {
   );
 }
 
-const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url }) => {
+const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url, variants = [] }) => {
   const [showLabels, setShowLabels] = useState(true);
+  const [variantId, setVariantId] = useState(variants[0]?.id ?? "default");
+  const activeUrl = variants.find((variant) => variant.id === variantId)?.url ?? url;
 
   return (
     <div className="w-full h-[400px] md:h-[500px] bg-black/40 backdrop-blur-3xl rounded-[40px] border border-white/10 overflow-hidden relative shadow-2xl">
@@ -121,12 +123,27 @@ const SimpleGLBViewer: React.FC<SimpleGLBViewerProps> = ({ url }) => {
             adjustCamera={false}
             shadows="contact"
           >
-            <Model url={url} showLabels={showLabels} />
+            <Model url={activeUrl} showLabels={showLabels} />
           </Stage>
           <OrbitControls makeDefault enablePan={true} enableZoom={true} />
           <Environment preset="apartment" />
         </Suspense>
       </Canvas>
+
+      {variants.length > 0 && (
+        <select
+          value={variantId}
+          onChange={(event) => setVariantId(event.target.value)}
+          className="absolute top-6 right-44 rounded-full border border-white/15 bg-black/70 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur-xl"
+          aria-label="Modellvariante"
+        >
+          {variants.map((variant) => (
+            <option key={variant.id} value={variant.id}>
+              {variant.label}
+            </option>
+          ))}
+        </select>
+      )}
 
       <button
         type="button"

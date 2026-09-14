@@ -12,6 +12,7 @@ export interface FileUploaderProps {
 
 export interface SimpleGLBViewerProps {
   url: string;
+  variants?: { id: string; label: string; url: string }[];
 }
 
 export interface EquipperState {
