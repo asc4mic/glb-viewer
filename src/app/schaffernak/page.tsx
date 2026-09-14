@@ -12,8 +12,8 @@ function getVersionedModelUrl() {
 
 export default function SchaffernakPage() {
   const variants = [
-    { id: "A", label: "Variante A · 8 Holzstützen", url: "/models/Schaffernak_Haus_A.glb" },
-    { id: "B", label: "Variante B · 12 Holzstützen", url: "/models/Schaffernak_Haus_B.glb" },
+    { id: "A", label: "A · 8 Stützen", url: "/models/Schaffernak_Haus_A.glb" },
+    { id: "B", label: "B · 12 Stützen", url: "/models/Schaffernak_Haus_B.glb" },
   ];
 
   return (
