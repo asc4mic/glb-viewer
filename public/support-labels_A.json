@@ -1,7 +1,7 @@
 [
   {
     "id": "F01",
-    "name": "Bestand_Stuetzenachse_1 (Fundamentstütze)",
+    "name": "Bestand_Stuetzenachse_1 (Fundamentst\u00fctze)",
     "group": "Beton",
     "color": "#a7aba9",
     "position": [
@@ -17,7 +17,7 @@
   },
   {
     "id": "W01",
-    "name": "Bestand_Stuetzenachse_5 (integrierte Stützwand)",
+    "name": "Bestand_Stuetzenachse_5 (integrierte St\u00fctzwand)",
     "group": "Beton",
     "color": "#a7aba9",
     "position": [
@@ -33,7 +33,7 @@
   },
   {
     "id": "F02",
-    "name": "Bestand_Stuetzenachse_3 (Fundamentstütze)",
+    "name": "Bestand_Stuetzenachse_3 (Fundamentst\u00fctze)",
     "group": "Beton",
     "color": "#a7aba9",
     "position": [
@@ -709,13 +709,13 @@
     "group": "Entwurf",
     "color": "#57626b",
     "position": [
-      -2.25,
+      -2.89984,
       1.25,
-      -8.72
+      -7.92
     ],
     "native_center": [
-      -2.25,
-      8.72,
+      -2.89984,
+      7.92,
       1.25
     ]
   },
