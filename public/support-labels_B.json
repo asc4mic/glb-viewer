@@ -1422,5 +1422,21 @@
       10.315,
       2.1
     ]
+  },
+  {
+    "id": "S107",
+    "name": "Carport_Stuetzen_gegenueber_S08",
+    "group": "Carport",
+    "color": "#555d61",
+    "position": [
+      4.28,
+      2.1,
+      -12.82
+    ],
+    "native_center": [
+      4.28,
+      12.82,
+      2.1
+    ]
   }
 ]
