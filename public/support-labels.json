@@ -1134,5 +1134,133 @@
       9.145,
       2.0875
     ]
+  },
+  {
+    "id": "S99",
+    "name": "Carport_Holzstuetze_nach_S98_1",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -9.475
+    ],
+    "native_center": [
+      -1.87,
+      9.475,
+      2.1
+    ]
+  },
+  {
+    "id": "S100",
+    "name": "Carport_Holzstuetze_nach_S98_2",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -9.594999999999999
+    ],
+    "native_center": [
+      -1.87,
+      9.594999999999999,
+      2.1
+    ]
+  },
+  {
+    "id": "S101",
+    "name": "Carport_Holzstuetze_nach_S98_3",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -9.715
+    ],
+    "native_center": [
+      -1.87,
+      9.715,
+      2.1
+    ]
+  },
+  {
+    "id": "S102",
+    "name": "Carport_Holzstuetze_nach_S98_4",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -9.834999999999999
+    ],
+    "native_center": [
+      -1.87,
+      9.834999999999999,
+      2.1
+    ]
+  },
+  {
+    "id": "S103",
+    "name": "Carport_Holzstuetze_nach_S98_5",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -9.955
+    ],
+    "native_center": [
+      -1.87,
+      9.955,
+      2.1
+    ]
+  },
+  {
+    "id": "S104",
+    "name": "Carport_Holzstuetze_nach_S98_6",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -10.075
+    ],
+    "native_center": [
+      -1.87,
+      10.075,
+      2.1
+    ]
+  },
+  {
+    "id": "S105",
+    "name": "Carport_Holzstuetze_nach_S98_7",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -10.195
+    ],
+    "native_center": [
+      -1.87,
+      10.195,
+      2.1
+    ]
+  },
+  {
+    "id": "S106",
+    "name": "Carport_Holzstuetze_nach_S98_8",
+    "group": "Holz",
+    "color": "#9b7653",
+    "position": [
+      -1.87,
+      2.1,
+      -10.315
+    ],
+    "native_center": [
+      -1.87,
+      10.315,
+      2.1
+    ]
   }
 ]
