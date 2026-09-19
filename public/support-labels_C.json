@@ -144,38 +144,6 @@
     ]
   },
   {
-    "id": "S10",
-    "name": "Carport_Metallgelaender_Podest_Seite_Pfosten_0",
-    "group": "Metall",
-    "color": "#343b42",
-    "position": [
-      -1.93,
-      1.55,
-      -9.44
-    ],
-    "native_center": [
-      -1.93,
-      9.44,
-      1.55
-    ]
-  },
-  {
-    "id": "S11",
-    "name": "Carport_Metallgelaender_Podest_Seite_Pfosten_1",
-    "group": "Metall",
-    "color": "#343b42",
-    "position": [
-      -1.93,
-      1.55,
-      -9.8
-    ],
-    "native_center": [
-      -1.93,
-      9.8,
-      1.55
-    ]
-  },
-  {
     "id": "S12",
     "name": "Carport_Metallgelaender_links_1_Pfosten_0",
     "group": "Metall",
@@ -183,11 +151,11 @@
     "position": [
       -1.93,
       1.55,
-      -9.84
+      -10.365
     ],
     "native_center": [
       -1.93,
-      9.84,
+      10.365,
       1.55
     ]
   },
@@ -199,11 +167,11 @@
     "position": [
       -1.93,
       1.55,
-      -10.7933
+      -11.1433
     ],
     "native_center": [
       -1.93,
-      10.79333,
+      11.1433,
       1.55
     ]
   },
@@ -215,11 +183,11 @@
     "position": [
       -1.93,
       1.55,
-      -11.7467
+      -11.9217
     ],
     "native_center": [
       -1.93,
-      11.74667,
+      11.9217,
       1.55
     ]
   },
