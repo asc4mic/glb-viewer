@@ -1121,18 +1121,18 @@
   },
   {
     "id": "S98",
-    "name": "Carport_Metallgelaender_Zwischen_S10_S32",
-    "group": "Metall",
-    "color": "#343b42",
+    "name": "Carport_Eckelement_Zwischen_S10_S32",
+    "group": "Ueberdachung",
+    "color": "#5f6468",
     "position": [
       -1.87,
-      1.55,
+      2.0875,
       -9.145
     ],
     "native_center": [
       -1.87,
       9.145,
-      1.55
+      2.0875
     ]
   }
 ]
