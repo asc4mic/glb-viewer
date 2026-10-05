@@ -1,0 +1,1426 @@
+[
+  {
+    "id": "F01",
+    "name": "Bestand_Stuetzenachse_1 (Fundamentst\u00fctze)",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      8.0204,
+      -1.535,
+      2.9
+    ],
+    "native_center": [
+      8.0204,
+      -2.9,
+      -1.535
+    ]
+  },
+  {
+    "id": "W01",
+    "name": "Bestand_Stuetzenachse_5 (integrierte St\u00fctzwand)",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      -2.7468,
+      -1.535,
+      -0.6462
+    ],
+    "native_center": [
+      -2.7468,
+      0.6462,
+      -1.535
+    ]
+  },
+  {
+    "id": "F02",
+    "name": "Bestand_Stuetzenachse_3 (Fundamentst\u00fctze)",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      -2.7468,
+      -1.535,
+      -4.171
+    ],
+    "native_center": [
+      -2.7468,
+      4.171,
+      -1.535
+    ]
+  },
+  {
+    "id": "S03",
+    "name": "Bestand_Stuetzenachse_4",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      2.6368,
+      -1.535,
+      2.9
+    ],
+    "native_center": [
+      2.63676,
+      -2.9,
+      -1.535
+    ]
+  },
+  {
+    "id": "S05",
+    "name": "Bestand_Stuetzenachse_6",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      -2.7468,
+      -1.535,
+      -7.72
+    ],
+    "native_center": [
+      -2.74684,
+      7.72,
+      -1.535
+    ]
+  },
+  {
+    "id": "S06",
+    "name": "Carport_Stuetzmauer_links_schematisch",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      -1.95,
+      0.315,
+      -12.8325
+    ],
+    "native_center": [
+      -1.95,
+      12.8325,
+      0.315
+    ]
+  },
+  {
+    "id": "S07",
+    "name": "Carport_Stuetzmauer_rechts_schematisch",
+    "group": "Beton",
+    "color": "#a7aba9",
+    "position": [
+      4.3,
+      0.315,
+      -12.8325
+    ],
+    "native_center": [
+      4.3,
+      12.8325,
+      0.315
+    ]
+  },
+  {
+    "id": "S08",
+    "name": "Carport_Stuetzen_-1.9299999999999997_12.8200016021728",
+    "group": "Carport",
+    "color": "#555d61",
+    "position": [
+      -1.93,
+      2.1,
+      -12.82
+    ],
+    "native_center": [
+      -1.93,
+      12.82,
+      2.1
+    ]
+  },
+  {
+    "id": "S09",
+    "name": "Carport_Stuetzen_-1.9299999999999997_15.7200016021728",
+    "group": "Carport",
+    "color": "#555d61",
+    "position": [
+      -1.93,
+      2.1,
+      -15.72
+    ],
+    "native_center": [
+      -1.93,
+      15.72,
+      2.1
+    ]
+  },
+  {
+    "id": "S10",
+    "name": "Carport_Metallgelaender_Podest_Seite_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -9.44
+    ],
+    "native_center": [
+      -1.93,
+      9.44,
+      1.55
+    ]
+  },
+  {
+    "id": "S11",
+    "name": "Carport_Metallgelaender_Podest_Seite_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -9.8
+    ],
+    "native_center": [
+      -1.93,
+      9.8,
+      1.55
+    ]
+  },
+  {
+    "id": "S12",
+    "name": "Carport_Metallgelaender_links_1_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -9.84
+    ],
+    "native_center": [
+      -1.93,
+      9.84,
+      1.55
+    ]
+  },
+  {
+    "id": "S13",
+    "name": "Carport_Metallgelaender_links_1_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -10.7933
+    ],
+    "native_center": [
+      -1.93,
+      10.79333,
+      1.55
+    ]
+  },
+  {
+    "id": "S14",
+    "name": "Carport_Metallgelaender_links_1_Pfosten_2",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -11.7467
+    ],
+    "native_center": [
+      -1.93,
+      11.74667,
+      1.55
+    ]
+  },
+  {
+    "id": "S15",
+    "name": "Carport_Metallgelaender_links_1_Pfosten_3",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -12.7
+    ],
+    "native_center": [
+      -1.93,
+      12.7,
+      1.55
+    ]
+  },
+  {
+    "id": "S16",
+    "name": "Carport_Metallgelaender_links_2_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -12.94
+    ],
+    "native_center": [
+      -1.93,
+      12.94,
+      1.55
+    ]
+  },
+  {
+    "id": "S17",
+    "name": "Carport_Metallgelaender_links_2_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -13.7017
+    ],
+    "native_center": [
+      -1.93,
+      13.70167,
+      1.55
+    ]
+  },
+  {
+    "id": "S18",
+    "name": "Carport_Metallgelaender_links_2_Pfosten_2",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -14.4633
+    ],
+    "native_center": [
+      -1.93,
+      14.46333,
+      1.55
+    ]
+  },
+  {
+    "id": "S19",
+    "name": "Carport_Metallgelaender_links_2_Pfosten_3",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.93,
+      1.55,
+      -15.225
+    ],
+    "native_center": [
+      -1.93,
+      15.225,
+      1.55
+    ]
+  },
+  {
+    "id": "S20",
+    "name": "Carport_Metallgelaender_Eingangsseite_1_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -10.44
+    ],
+    "native_center": [
+      4.28,
+      10.44,
+      1.55
+    ]
+  },
+  {
+    "id": "S21",
+    "name": "Carport_Metallgelaender_Eingangsseite_1_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -11.4467
+    ],
+    "native_center": [
+      4.28,
+      11.44667,
+      1.55
+    ]
+  },
+  {
+    "id": "S22",
+    "name": "Carport_Metallgelaender_Eingangsseite_1_Pfosten_2",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -12.4533
+    ],
+    "native_center": [
+      4.28,
+      12.45333,
+      1.55
+    ]
+  },
+  {
+    "id": "S23",
+    "name": "Carport_Metallgelaender_Eingangsseite_1_Pfosten_3",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -13.46
+    ],
+    "native_center": [
+      4.28,
+      13.46,
+      1.55
+    ]
+  },
+  {
+    "id": "S24",
+    "name": "Carport_Metallgelaender_Eingangsseite_2_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -13.64
+    ],
+    "native_center": [
+      4.28,
+      13.64,
+      1.55
+    ]
+  },
+  {
+    "id": "S25",
+    "name": "Carport_Metallgelaender_Eingangsseite_2_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -13.91
+    ],
+    "native_center": [
+      4.28,
+      13.91,
+      1.55
+    ]
+  },
+  {
+    "id": "S26",
+    "name": "Carport_Metallgelaender_Eingangsseite_3_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -14.09
+    ],
+    "native_center": [
+      4.28,
+      14.09,
+      1.55
+    ]
+  },
+  {
+    "id": "S27",
+    "name": "Carport_Metallgelaender_Eingangsseite_3_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -14.36
+    ],
+    "native_center": [
+      4.28,
+      14.36,
+      1.55
+    ]
+  },
+  {
+    "id": "S28",
+    "name": "Carport_Metallgelaender_Eingangsseite_4_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -14.54
+    ],
+    "native_center": [
+      4.28,
+      14.54,
+      1.55
+    ]
+  },
+  {
+    "id": "S29",
+    "name": "Carport_Metallgelaender_Eingangsseite_4_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -14.81
+    ],
+    "native_center": [
+      4.28,
+      14.81,
+      1.55
+    ]
+  },
+  {
+    "id": "S30",
+    "name": "Carport_Metallgelaender_Eingangsseite_5_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -14.99
+    ],
+    "native_center": [
+      4.28,
+      14.99,
+      1.55
+    ]
+  },
+  {
+    "id": "S31",
+    "name": "Carport_Metallgelaender_Eingangsseite_5_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.28,
+      1.55,
+      -15.225
+    ],
+    "native_center": [
+      4.28,
+      15.225,
+      1.55
+    ]
+  },
+  {
+    "id": "S32",
+    "name": "Carport_Metallgelaender_Podest_Hausseite_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -1.81,
+      1.55,
+      -8.85
+    ],
+    "native_center": [
+      -1.81,
+      8.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S33",
+    "name": "Carport_Metallgelaender_Podest_Hausseite_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -0.93,
+      1.55,
+      -8.85
+    ],
+    "native_center": [
+      -0.93,
+      8.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S34",
+    "name": "Carport_Metallgelaender_Podest_Hausseite_Pfosten_2",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      -0.05,
+      1.55,
+      -8.85
+    ],
+    "native_center": [
+      -0.05,
+      8.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S35",
+    "name": "Carport_Metallgelaender_Podest_Hausseite_Pfosten_3",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      0.83,
+      1.55,
+      -8.85
+    ],
+    "native_center": [
+      0.83,
+      8.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S36",
+    "name": "Carport_Metallgelaender_Stiegenaufgang_Kante_Pfosten_0",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      0.87,
+      1.55,
+      -9.85
+    ],
+    "native_center": [
+      0.87,
+      9.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S37",
+    "name": "Carport_Metallgelaender_Stiegenaufgang_Kante_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      1.6925,
+      1.55,
+      -9.85
+    ],
+    "native_center": [
+      1.6925,
+      9.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S38",
+    "name": "Carport_Metallgelaender_Stiegenaufgang_Kante_Pfosten_2",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      2.515,
+      1.55,
+      -9.85
+    ],
+    "native_center": [
+      2.515,
+      9.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S39",
+    "name": "Carport_Metallgelaender_Stiegenaufgang_Kante_Pfosten_3",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      3.3375,
+      1.55,
+      -9.85
+    ],
+    "native_center": [
+      3.3375,
+      9.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S40",
+    "name": "Carport_Metallgelaender_Stiegenaufgang_Kante_Pfosten_4",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      4.16,
+      1.55,
+      -9.85
+    ],
+    "native_center": [
+      4.16,
+      9.85,
+      1.55
+    ]
+  },
+  {
+    "id": "S41",
+    "name": "Carport_Treppengelaender_Pfosten_1",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      1.09,
+      1.53,
+      -8.85
+    ],
+    "native_center": [
+      1.09,
+      8.85,
+      1.53
+    ]
+  },
+  {
+    "id": "S42",
+    "name": "Carport_Treppengelaender_Pfosten_2",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      1.9,
+      1.0488,
+      -8.85
+    ],
+    "native_center": [
+      1.9,
+      8.85,
+      1.04875
+    ]
+  },
+  {
+    "id": "S43",
+    "name": "Carport_Treppengelaender_Pfosten_3",
+    "group": "Metall",
+    "color": "#343b42",
+    "position": [
+      2.61,
+      0.6667,
+      -8.85
+    ],
+    "native_center": [
+      2.61,
+      8.85,
+      0.66666
+    ]
+  },
+  {
+    "id": "S44",
+    "name": "Entwurf_Eigenstaendige_Stuetzen_Eingang",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      4.6,
+      1.25,
+      -9.72
+    ],
+    "native_center": [
+      4.6,
+      9.72,
+      1.25
+    ]
+  },
+  {
+    "id": "S45",
+    "name": "Entwurf_Eigenstaendige_Stuetzen_Balkon",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -2.89984,
+      1.25,
+      -7.92
+    ],
+    "native_center": [
+      -2.89984,
+      7.92,
+      1.25
+    ]
+  },
+  {
+    "id": "S46",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_links_1",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -0.13,
+      1.2375,
+      -0.13
+    ],
+    "native_center": [
+      -0.13,
+      0.13,
+      1.2375
+    ]
+  },
+  {
+    "id": "S47",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_links_2",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -0.13,
+      1.2375,
+      -4.17
+    ],
+    "native_center": [
+      -0.13,
+      4.17,
+      1.2375
+    ]
+  },
+  {
+    "id": "S48",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_links_3",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -0.13,
+      1.2375,
+      -7.69
+    ],
+    "native_center": [
+      -0.13,
+      7.69,
+      1.2375
+    ]
+  },
+  {
+    "id": "S49",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_vorne_1",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      0.13,
+      1.2375,
+      0.13
+    ],
+    "native_center": [
+      0.13,
+      -0.13,
+      1.2375
+    ]
+  },
+  {
+    "id": "S50",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_vorne_2",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      3.2,
+      1.2375,
+      0.13
+    ],
+    "native_center": [
+      3.2,
+      -0.13,
+      1.2375
+    ]
+  },
+  {
+    "id": "S52",
+    "name": "Entwurf_Wandseitige_Stuetze_Eingang_1",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      4.6,
+      1.2375,
+      -7.95
+    ],
+    "native_center": [
+      4.6,
+      7.95,
+      1.2375
+    ]
+  },
+  {
+    "id": "S53",
+    "name": "Entwurf_Wandseitige_Stuetze_Eingang_2",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      8.6,
+      1.2375,
+      -9.72
+    ],
+    "native_center": [
+      8.6,
+      9.72,
+      1.2375
+    ]
+  },
+  {
+    "id": "S55",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_vorne_BV2",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      8.02,
+      1.2375,
+      2.9
+    ],
+    "native_center": [
+      8.02,
+      -2.9,
+      1.2375
+    ]
+  },
+  {
+    "id": "S56",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_BV3",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      0.14
+    ],
+    "native_center": [
+      8.0204,
+      -0.14,
+      1.25
+    ]
+  },
+  {
+    "id": "S59",
+    "name": "Entwurf_Dachstuetze_3",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -2.8998,
+      1.25,
+      -4.171
+    ],
+    "native_center": [
+      -2.89984,
+      4.17097,
+      1.25
+    ]
+  },
+  {
+    "id": "S60",
+    "name": "Carport_Holzstuetze_Eingangsseite_1",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -14.815
+    ],
+    "native_center": [
+      4.28,
+      14.815,
+      2.1
+    ]
+  },
+  {
+    "id": "S61",
+    "name": "Carport_Holzstuetze_Eingangsseite_2",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -14.655
+    ],
+    "native_center": [
+      4.28,
+      14.655,
+      2.1
+    ]
+  },
+  {
+    "id": "S62",
+    "name": "Carport_Holzstuetze_Eingangsseite_3",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -14.495
+    ],
+    "native_center": [
+      4.28,
+      14.495,
+      2.1
+    ]
+  },
+  {
+    "id": "S63",
+    "name": "Carport_Holzstuetze_Eingangsseite_4",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -14.335
+    ],
+    "native_center": [
+      4.28,
+      14.335,
+      2.1
+    ]
+  },
+  {
+    "id": "S64",
+    "name": "Entwurf_Holzstuetze_Eingang_1",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -9.0
+    ],
+    "native_center": [
+      8.62,
+      9.0,
+      1.25
+    ]
+  },
+  {
+    "id": "S65",
+    "name": "Entwurf_Holzstuetze_Eingang_2",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -8.84
+    ],
+    "native_center": [
+      8.62,
+      8.84,
+      1.25
+    ]
+  },
+  {
+    "id": "S66",
+    "name": "Entwurf_Holzstuetze_Eingang_3",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -8.68
+    ],
+    "native_center": [
+      8.62,
+      8.68,
+      1.25
+    ]
+  },
+  {
+    "id": "S67",
+    "name": "Entwurf_Holzstuetze_Eingang_4",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -8.52
+    ],
+    "native_center": [
+      8.62,
+      8.52,
+      1.25
+    ]
+  },
+  {
+    "id": "S68",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_1",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      1.225
+    ],
+    "native_center": [
+      -2.92,
+      -1.225,
+      1.25
+    ]
+  },
+  {
+    "id": "S69",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_2",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      1.065
+    ],
+    "native_center": [
+      -2.92,
+      -1.065,
+      1.25
+    ]
+  },
+  {
+    "id": "S70",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_3",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      0.905
+    ],
+    "native_center": [
+      -2.92,
+      -0.905,
+      1.25
+    ]
+  },
+  {
+    "id": "S71",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_4",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      0.745
+    ],
+    "native_center": [
+      -2.92,
+      -0.745,
+      1.25
+    ]
+  },
+  {
+    "id": "S72",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_1",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      0.105
+    ],
+    "native_center": [
+      8.02035,
+      -0.105,
+      1.25
+    ]
+  },
+  {
+    "id": "S73",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_2",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      0.265
+    ],
+    "native_center": [
+      8.02035,
+      -0.265,
+      1.25
+    ]
+  },
+  {
+    "id": "S74",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_3",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      0.425
+    ],
+    "native_center": [
+      8.02035,
+      -0.425,
+      1.25
+    ]
+  },
+  {
+    "id": "S75",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_4",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      0.585
+    ],
+    "native_center": [
+      8.02035,
+      -0.585,
+      1.25
+    ]
+  },
+  {
+    "id": "S76",
+    "name": "Entwurf_Wandseitige_Stuetze_Balkon_vorne_gegenueber_S50",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      2.6368,
+      1.2375,
+      2.9
+    ],
+    "native_center": [
+      2.63676,
+      -2.9,
+      1.2375
+    ]
+  },
+  {
+    "id": "S77",
+    "name": "Entwurf_Dachstuetze_2",
+    "group": "Entwurf",
+    "color": "#57626b",
+    "position": [
+      -2.9,
+      1.25,
+      2.9
+    ],
+    "native_center": [
+      -2.9,
+      -2.9,
+      1.25
+    ]
+  },
+  {
+    "id": "S78",
+    "name": "Entwurf_Holzstuetze_Eingang_5",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -8.36
+    ],
+    "native_center": [
+      8.62,
+      8.36,
+      1.25
+    ]
+  },
+  {
+    "id": "S79",
+    "name": "Entwurf_Holzstuetze_Eingang_6",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -8.2
+    ],
+    "native_center": [
+      8.62,
+      8.2,
+      1.25
+    ]
+  },
+  {
+    "id": "S80",
+    "name": "Entwurf_Holzstuetze_Eingang_7",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -8.04
+    ],
+    "native_center": [
+      8.62,
+      8.04,
+      1.25
+    ]
+  },
+  {
+    "id": "S81",
+    "name": "Entwurf_Holzstuetze_Eingang_8",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.62,
+      1.25,
+      -7.88
+    ],
+    "native_center": [
+      8.62,
+      7.88,
+      1.25
+    ]
+  },
+  {
+    "id": "S86",
+    "name": "Carport_Holzstuetze_Eingangsseite_5",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -14.175
+    ],
+    "native_center": [
+      4.28,
+      14.175,
+      2.1
+    ]
+  },
+  {
+    "id": "S87",
+    "name": "Carport_Holzstuetze_Eingangsseite_6",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -14.015
+    ],
+    "native_center": [
+      4.28,
+      14.015,
+      2.1
+    ]
+  },
+  {
+    "id": "S88",
+    "name": "Carport_Holzstuetze_Eingangsseite_7",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -13.855
+    ],
+    "native_center": [
+      4.28,
+      13.855,
+      2.1
+    ]
+  },
+  {
+    "id": "S89",
+    "name": "Carport_Holzstuetze_Eingangsseite_8",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      4.28,
+      2.1,
+      -13.695
+    ],
+    "native_center": [
+      4.28,
+      13.695,
+      2.1
+    ]
+  },
+  {
+    "id": "S90",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_5",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      0.585
+    ],
+    "native_center": [
+      -2.92,
+      -0.585,
+      1.25
+    ]
+  },
+  {
+    "id": "S91",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_6",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      0.425
+    ],
+    "native_center": [
+      -2.92,
+      -0.425,
+      1.25
+    ]
+  },
+  {
+    "id": "S92",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_7",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      0.265
+    ],
+    "native_center": [
+      -2.92,
+      -0.265,
+      1.25
+    ]
+  },
+  {
+    "id": "S93",
+    "name": "Entwurf_Holzstuetze_linkes_Eck_8",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      -2.92,
+      1.25,
+      0.105
+    ],
+    "native_center": [
+      -2.92,
+      -0.105,
+      1.25
+    ]
+  },
+  {
+    "id": "S94",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_5",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      0.745
+    ],
+    "native_center": [
+      8.02035,
+      -0.745,
+      1.25
+    ]
+  },
+  {
+    "id": "S95",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_6",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      0.905
+    ],
+    "native_center": [
+      8.02035,
+      -0.905,
+      1.25
+    ]
+  },
+  {
+    "id": "S96",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_7",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      1.065
+    ],
+    "native_center": [
+      8.02035,
+      -1.065,
+      1.25
+    ]
+  },
+  {
+    "id": "S97",
+    "name": "Entwurf_Holzstuetze_rechts_vorn_8",
+    "group": "Holz",
+    "color": "#cbb58c",
+    "position": [
+      8.0204,
+      1.25,
+      1.225
+    ],
+    "native_center": [
+      8.02035,
+      -1.225,
+      1.25
+    ]
+  }
+]
