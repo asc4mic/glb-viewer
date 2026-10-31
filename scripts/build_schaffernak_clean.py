@@ -183,7 +183,7 @@ def build(master_path,interior_path,output):
            1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
     flat=[v for vertex in verts for v in vertex]
     pos=accessor(struct.pack("<"+"f"*len(flat),*flat),5126,"VEC3",8,
-                 ([x0,y0,z0],[x1,y1,z1]))
+                 ([x0,y0,z0],[x1,upper_top,z1]))
     inds=accessor(struct.pack("<"+"I"*len(faces),*faces),5125,"SCALAR",len(faces),target=34963)
     parapet_mat=len(doc["materials"])
     doc["materials"].append({"name":"OG_Stiege_Bruestung_massiv",
