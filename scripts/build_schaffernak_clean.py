@@ -170,10 +170,58 @@ def build(master_path,interior_path,output):
     ni=len(doc["nodes"])
     doc["nodes"].append({"name":gap_name,"mesh":mi})
     doc["scenes"][0]["nodes"].append(ni)
+    # OG: V3 door lintels stop at y=5.17 m while all adjacent OG walls
+    # continue to y=5.52 m. Fill ONLY the six proven 35 cm top gaps.
+    # Preserve the original door clear openings and lintels below.
+    og_wall_tops=[]
+    for _,wall in selected:
+        if not re.fullmatch(r"Innen__Innenwand_DXF_OG_\\d+",wall["name"]):
+            continue
+        primitive=v3["meshes"][wall["mesh"]]["primitives"][0]
+        a=v3["accessors"][primitive["attributes"]["POSITION"]]
+        if "max" in a: og_wall_tops.append(a["max"][1])
+    if len(og_wall_tops)<20 or max(og_wall_tops)-min(og_wall_tops)>0.01:
+        raise ValueError("OG wall heights differ; do not fill door lintels automatically")
+    og_wall_top=max(og_wall_tops)
+    og_lintels=[n for _,n in selected if re.fullmatch(r"Innen__OG_Tuer_.*_Sturz",n["name"])]
+    if len(og_lintels)!=6:
+        raise ValueError(f"Expected six OG lintels; found {len(og_lintels)}")
+    og_header_fixes=[]
+    for lintel in og_lintels:
+        primitive=v3["meshes"][lintel["mesh"]]["primitives"][0]
+        bounds=v3["accessors"][primitive["attributes"]["POSITION"]]
+        if "min" not in bounds or "max" not in bounds:
+            raise ValueError("OG lintel has no position bounds")
+        low,high=bounds["min"],bounds["max"]
+        if not (0.25 < og_wall_top-high[1] < 0.45):
+            raise ValueError("Unexpected OG gap over "+lintel["name"])
+        if "matrix" in lintel or "translation" in lintel or "rotation" in lintel or "scale" in lintel:
+            raise ValueError("OG lintel transform needs manual inspection")
+        # Same horizontal footprint as the original lintel; continuous wall to 5.52 m.
+        x0,z0=low[0],low[2]
+        x1,z1=high[0],high[2]
+        y0,y1=high[1],og_wall_top
+        verts=[(x0,y0,z0),(x1,y0,z0),(x1,y0,z1),(x0,y0,z1),
+               (x0,y1,z0),(x1,y1,z0),(x1,y1,z1),(x0,y1,z1)]
+        faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
+               1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
+        flat=[value for vertex in verts for value in vertex]
+        pos=accessor(struct.pack("<"+"f"*len(flat),*flat),5126,"VEC3",8,
+                     ([x0,y0,z0],[x1,y1,z1]))
+        inds=accessor(struct.pack("<"+"I"*len(faces),*faces),5125,"SCALAR",len(faces),target=34963)
+        name=lintel["name"].replace("_Sturz","_Wand_oberhalb_Sturz")
+        mi=len(doc["meshes"])
+        doc["meshes"].append({"name":name,"primitives":[{"attributes":{"POSITION":pos},
+            "indices":inds,"material":material,"mode":4}]})
+        ni=len(doc["nodes"])
+        doc["nodes"].append({"name":name,"mesh":mi})
+        doc["scenes"][0]["nodes"].append(ni)
+        og_header_fixes.append(name)
     save(output,doc,blob)
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
             "interior_junction_fixes":[gap_name],
+            "og_door_header_fixes":og_header_fixes,
             "groups":dict(groups),"railing_update":railing_report,
             "original_repeated_names":repeated,
             "renamed_frame_parts":sum(repeated.values()),
@@ -184,6 +232,7 @@ def build(master_path,interior_path,output):
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Railing:",railing_report)
     print("Interior: added KG wall junction fix",gap_name)
+    print("Interior: closed",len(og_header_fixes),"OG gaps above door lintels")
     print("Report:",str(output)+".report.json")
 
 if __name__=="__main__":
