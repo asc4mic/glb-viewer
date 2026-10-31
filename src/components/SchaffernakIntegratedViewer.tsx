@@ -20,7 +20,7 @@ function isRoof(name: string) {
   return /^(Satteldach_|Giebel_|OG_Kniestock_|Carport_Dach|Entwurf_Dach)/.test(name);
 }
 function isTerrain(name: string) {
-  return /^(Gelaende_|Foto_Gelaende_|Mauer_)/.test(name);
+  return /^(Gelaende_|Foto_Gelaende_|Mauer_|Strasse_|Carport_Unterbau_Fuellung)/.test(name);
 }
 function isInterior(name: string) {
   return name.startsWith("Innen__") || /^(EG|OG)_Kamin_/.test(name);
@@ -55,9 +55,9 @@ function InteriorModel({ url, floor, walls, roof, terrain, fireplace }: {
 }
 
 export default function SchaffernakIntegratedViewer({
-  variants, interiorAvailable, terrainV4Available, exteriorV5Available,
-}: { variants: Variant[]; interiorAvailable: boolean; terrainV4Available: boolean; exteriorV5Available: boolean }) {
-  const [variant, setVariant] = useState(exteriorV5Available ? "V5" : terrainV4Available ? "V4" : interiorAvailable ? "V3" : "A");
+  variants, interiorAvailable, terrainV4Available, exteriorV5Available, cleanV6Available,
+}: { variants: Variant[]; interiorAvailable: boolean; terrainV4Available: boolean; exteriorV5Available: boolean; cleanV6Available: boolean }) {
+  const [variant, setVariant] = useState(cleanV6Available ? "V6" : exteriorV5Available ? "V5" : terrainV4Available ? "V4" : interiorAvailable ? "V3" : "A");
   const [floor, setFloor] = useState<Floor>("ALL");
   const [walls, setWalls] = useState(true);
   const [roof, setRoof] = useState(true);
@@ -70,6 +70,7 @@ export default function SchaffernakIntegratedViewer({
         <label htmlFor="schaffernak-model">Modell</label>
         <select id="schaffernak-model" value={variant} onChange={e => setVariant(e.target.value)}
           className="rounded-xl border border-white/20 bg-slate-900 px-3 py-2 text-white">
+          {cleanV6Available && <option value="V6">V6 · Original außen + Innenräume</option>}
           {exteriorV5Available && <option value="V5">V5 · Vollständige Außenanlage</option>}
           {terrainV4Available && <option value="V4">V4 · Innen/Außen mit Gelände</option>}
           {interiorAvailable && <option value="V3">V3 · Innen und Außen (alt)</option>}
@@ -77,7 +78,7 @@ export default function SchaffernakIntegratedViewer({
         </select>
       </div>
 
-      {variant !== "V3" && variant !== "V4" && variant !== "V5" ? (
+      {variant !== "V3" && variant !== "V4" && variant !== "V5" && variant !== "V6" ? (
         <SimpleGLBViewer key={variant} url={variants.find(v => v.id === variant)?.url ?? variants[0].url}
           variants={variants.filter(v => v.id === variant)} />
       ) : (
@@ -111,7 +112,7 @@ export default function SchaffernakIntegratedViewer({
               <directionalLight position={[-12, 9, 12]} intensity={0.85} />
               <directionalLight position={[12, 9, -12]} intensity={0.85} />
               <Suspense fallback={null}>
-                <InteriorModel url={variant === "V5" ? "/models/Schaffernak_Haus_V5.glb" : variant === "V4" ? "/models/Schaffernak_Haus_V4.glb" : "/models/Schaffernak_Haus_V3.glb"}
+                <InteriorModel url={variant === "V6" ? "/models/Schaffernak_Haus_V6.glb" : variant === "V5" ? "/models/Schaffernak_Haus_V5.glb" : variant === "V4" ? "/models/Schaffernak_Haus_V4.glb" : "/models/Schaffernak_Haus_V3.glb"}
                   floor={floor} walls={walls} roof={roof} terrain={terrain} fireplace={fireplace} />
               </Suspense>
               <OrbitControls makeDefault enablePan enableZoom minDistance={1} maxDistance={120} />
