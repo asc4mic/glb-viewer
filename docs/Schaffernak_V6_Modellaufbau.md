@@ -36,3 +36,13 @@ Beim sauberen V6-Export ersetzt `scripts/balcony_glass_on_slab.py` **nur** die b
 - **Kontrolle:** Nach dem Export besonders Dachanschlüsse, Carport, Stützen, Geländer, Stiege, Balkonplatte und die OG-Fenster visuell prüfen.
 
 Die bisherigen V3/V4/V5-Dateien werden nicht überschrieben. Die neue Datei heißt `Schaffernak_Haus_V6.glb`, mit maschinenlesbarem `.report.json`.
+
+## Innenausbau – Wandanschlüsse (31.10.2026)
+
+- Die V3-Innengeometrie enthält 159 Innenobjekte einschließlich der Türlaibungen, Bodenflächen, Treppen und der beiden Kaminobjekte.
+- Ein automatischer Vergleich der achsparallelen Wand-Bounding-Boxes zeigt bei EG und OG keine verbleibenden 2–85 mm Lücken zwischen nahen Wandsegmenten. Das ersetzt keine visuelle Planprüfung und erkennt keine größeren Unterbrechungen.
+- Im KG besteht zwischen `Innen__Innenwand_DXF_KG_017` und `Innen__Innenwand_DXF_KG_002` eine 19-mm-Fuge an einer gemeinsamen Rückwandzone. Der V6-Builder ergänzt dort **ausschließlich** `Innen__Innenwand_DXF_KG_Anschluss_003`, x=6,41–6,45 m, Höhe −2,69 bis −0,24 m, y-Grundriss=7,22–7,41 m. Original-V3 und Original-Außenmodell bleiben unverändert.
+- Kamin im EG ist als `EG_Kamin_Geschlossene_Verblendung`, im OG als `OG_Kamin_Geschlossener_Schacht_Vorentwurf` vorhanden; genaue Position und Schachtquerschnitt sind noch anhand des Plans und der Baustellenausführung abzugleichen.
+- Die beiden OG-Giebelfenster bleiben zur Vermeidung widersprüchlicher Wandöffnungen zunächst im Original-Außenstand. Die Nutzerkorrektur „beide bis Fußboden“ ist weiterhin offen.
+
+**Nächste Sichtprüfung:** Innenansicht KG/EG/OG im Viewer; EG-Büro/Wohnen bleibt offen, kein durchgehender Wandzug. Danach Kamin und bodentiefe Fenster planbasiert korrigieren.
