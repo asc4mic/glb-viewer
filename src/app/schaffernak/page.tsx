@@ -11,6 +11,7 @@ function getVersionedModelUrl() {
 }
 
 export default function SchaffernakPage() {
+  const exteriorV5Available = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V5.glb"));
   const terrainV4Available = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V4.glb"));
   const interiorAvailable = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V3.glb"));
   const variants = [
@@ -40,7 +41,7 @@ export default function SchaffernakPage() {
           </Link>
         </div>
 
-        <SchaffernakIntegratedViewer variants={variants} interiorAvailable={interiorAvailable} terrainV4Available={terrainV4Available} />
+        <SchaffernakIntegratedViewer variants={variants} interiorAvailable={interiorAvailable} terrainV4Available={terrainV4Available} exteriorV5Available={exteriorV5Available} />
       </div>
     </main>
   );
