@@ -1,7 +1,10 @@
+import { Suspense } from "react";
 import Home from "../views/index";
 
-const page = () => {
-  return <Home />;
-};
-
-export default page;
+export default function Page() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-[#030712] text-white p-8">GLB-Viewer wird geladen …</main>}>
+      <Home />
+    </Suspense>
+  );
+}
