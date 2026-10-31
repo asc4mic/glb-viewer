@@ -10,6 +10,10 @@ import struct
 from pathlib import Path
 
 TERRAIN_NAMES = {
+    # These two original underbuild meshes close the deliberately excluded
+    # carport and road footprints in the photo-terrain surface.
+    "Carport_Unterbau_Fuellung",
+    "Strasse_Unterbau_schematisch",
     "Foto_Gelaende_Hang_unten",
     "Foto_Gelaende_Rasen_Boeschung",
     "Foto_Gelaende_Kies_Kellerbereich",
@@ -21,6 +25,8 @@ OLD_TERRAIN = {
     "Gelaende_links_schematisch",
     "Gelaende_hinten_schematisch",
     "Gelaende_linke_Stuetzen_verdeckt",
+    "Carport_Unterbau_Fuellung",
+    "Strasse_Unterbau_schematisch",
 }
 
 def read_glb(path):
