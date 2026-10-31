@@ -54,3 +54,7 @@ Die V3-Geometrie besitzt sechs OG-Türstürze (U136, U138, U139, U140, U141 und 
 ## OG-Stiege: zentrale Brüstung (31.10.2026)
 
 Die Nutzeransicht zeigt eine fälschlich raumhohe Trennwand zwischen den beiden Treppenläufen. Der V3-Geometrieauszug bestätigt die Segmente `Innen__Innenwand_DXF_OG_041` (x=4,855–4,985 m) und `Innen__Innenwand_DXF_OG_026` (x=4,985–5,115 m), beide z=−6,440 bis −5,380 m und y=3,000–5,520 m. Die V6-Erzeugung **überspringt nur diese beiden V3-Wände** und setzt eine massive Brüstung `Innen__OG_Stiege_Bruestung_zwischen_Laeufen` über deren kombinierte Grundfläche, y=3,00–4,00 m (vorläufig 1,00 m Höhe). Die restlichen OG-Wände und die EG–OG-Treppenläufe bleiben unverändert. Eine zweite im Screenshot markierte schmale Wandstelle wird nicht ohne eindeutige Zuordnung verändert. Geometrieprüfung im Viewer ausstehend.
+
+### Nachtrag: geneigte Brüstungsoberkante
+
+Die Brüstung zwischen den Treppenläufen hat keine waagrechte Oberkante: Am oberen Ende des Treppenlaufs (z=−5,38 m) liegt die Oberkante bei y=4,00 m, am unteren Ende (z=−6,44 m) bei y=3,00 m. Dazwischen verläuft sie geradlinig geneigt. Das ist eine schematische Visualisierung der Schräge; die endgültige Brüstungshöhe über den einzelnen Stufen ist vor Ausführung zu prüfen. Die Stufen bleiben unverändert.
