@@ -175,7 +175,7 @@ def build(master_path,interior_path,output):
     # Preserve the original door clear openings and lintels below.
     og_wall_tops=[]
     for _,wall in selected:
-        if not re.fullmatch(r"Innen__Innenwand_DXF_OG_\\d+",wall["name"]):
+        if not re.fullmatch(r"Innen__Innenwand_DXF_OG_[0-9]+",wall["name"]):
             continue
         primitive=v3["meshes"][wall["mesh"]]["primitives"][0]
         a=v3["accessors"][primitive["attributes"]["POSITION"]]
