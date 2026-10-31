@@ -167,13 +167,18 @@ def build(master_path,interior_path,output):
     z0=min(lo[2] for lo,hi in stair_bounds)
     z1=max(hi[2] for lo,hi in stair_bounds)
     y0=min(lo[1] for lo,hi in stair_bounds)
-    y1=4.00  # 1.00 m above OG wall base at 3.00 m; schematic
+    # Sloping parapet along stair flight B. At the upper end (z1)
+    # it rises 1.00 m above the OG floor; toward the lower end (z0)
+    # the top descends with the stair gradient. Preserve OG floor baseline.
+    upper_top=4.00
+    lower_top=3.00
     if not (4.84<x0<4.87 and 5.10<x1<5.13 and
             -6.46<z0<-6.42 and -5.40<z1<-5.36 and
             2.99<y0<3.01 and all(abs(hi[1]-5.52)<.02 for lo,hi in stair_bounds)):
         raise ValueError("OG stair partition footprint changed; refusing to alter geometry")
     verts=[(x0,y0,z0),(x1,y0,z0),(x1,y0,z1),(x0,y0,z1),
-           (x0,y1,z0),(x1,y1,z0),(x1,y1,z1),(x0,y1,z1)]
+           (x0,lower_top,z0),(x1,lower_top,z0),
+           (x1,upper_top,z1),(x0,upper_top,z1)]
     faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
            1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
     flat=[v for vertex in verts for v in vertex]
@@ -272,7 +277,7 @@ def build(master_path,interior_path,output):
             "interior_junction_fixes":[gap_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
             "og_stair_parapet":parapet_name,
-            "og_stair_parapet_top_m":y1,
+            "og_stair_parapet_top_m":{"lower_end":lower_top,"upper_end":upper_top},
             "og_door_header_fixes":og_header_fixes,
             "groups":dict(groups),"railing_update":railing_report,
             "original_repeated_names":repeated,
@@ -284,7 +289,7 @@ def build(master_path,interior_path,output):
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Railing:",railing_report)
     print("Interior: added KG wall junction fix",gap_name)
-    print("Interior: OG stair partition replaced with low parapet",parapet_name)
+    print("Interior: OG stair partition replaced with sloped parapet",parapet_name)
     print("Interior: closed",len(og_header_fixes),"OG gaps above door lintels")
     print("Report:",str(output)+".report.json")
 
