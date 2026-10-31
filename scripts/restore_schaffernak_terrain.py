@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Restore the previously modelled terrain from haus-schaffernak-3d/model/model_items.json.
+"""Restore previously modelled terrain, carport retaining walls, stairs and slabs.
 
-Pure Python stdlib: merges the original terrain meshes into the V3 GLB without
+Pure Python stdlib: merges the original selected meshes into the V3 GLB without
 changing interior walls, windows, carport or other geometry. Writes V4 GLB.
 """
 import argparse
@@ -10,6 +10,21 @@ import struct
 from pathlib import Path
 
 TERRAIN_NAMES = {
+    # Existing structural elements omitted from the original simplified GLB.
+    "Carport_Unterbau_Stirnwand",
+    "Carport_Stuetzmauer_links_schematisch",
+    "Carport_Stuetzmauer_rechts_schematisch",
+    "Carport_Abgang_Podest",
+    "Carport_Podest_Mauer_Stirn_schematisch",
+    "Carport_Podest_Mauer_Seite_schematisch",
+    "Balkon_Ruecklauf_Durchgang",
+    "Balkon_Eingangsbereich_bis_Fenster",
+    "Carport_Stiege_1",
+    "Carport_Stiege_2",
+    "Carport_Stiege_3",
+    "Carport_Stiege_4",
+    "Carport_Stiege_5",
+    "Carport_Stiege_6",
     # These two original underbuild meshes close the deliberately excluded
     # carport and road footprints in the photo-terrain surface.
     "Carport_Unterbau_Fuellung",
@@ -60,7 +75,7 @@ def restore(source, terrain_json, target):
     terrain = [o for o in items if o.get("name") in TERRAIN_NAMES]
     found = {o["name"] for o in terrain}
     if found != TERRAIN_NAMES:
-        raise ValueError("Missing original terrain meshes: " + ", ".join(sorted(TERRAIN_NAMES - found)))
+        raise ValueError("Missing original model meshes: " + ", ".join(sorted(TERRAIN_NAMES - found)))
     if len(gltf.get("buffers", [])) != 1:
         raise ValueError("Expected exactly one GLB binary buffer")
     roots = gltf["scenes"][gltf.get("scene", 0)]["nodes"]
@@ -123,7 +138,7 @@ def restore(source, terrain_json, target):
         gltf["nodes"].append({"name": o["name"], "mesh": mesh_id})
         root["children"].append(node_id)
     write_glb(target, gltf, binary)
-    print("Restored", len(terrain), "original terrain meshes; saved", target)
+    print("Restored", len(terrain), "original terrain and carport meshes; saved", target)
     print("Original V3 retained:", source)
 
 if __name__ == "__main__":
