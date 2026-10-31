@@ -32,8 +32,11 @@ def build(master_path,interior_path,output):
     groups=Counter(o["group"] for o in items)
     required={"Beton","Ueberdachung","Carport","Holz","Metall","Edelstahl","Glas","Gelaende"}
     names=[o["name"] for o in items]
-    if len(items)<600 or not required.issubset(groups) or len(names)!=len(set(names)):
-        raise ValueError("Original master incomplete or contains duplicate mesh names")
+    if len(items)<600 or not required.issubset(groups):
+        raise ValueError("Original master incomplete or missing required exterior groups")
+    name_counts=Counter(names)
+    repeated={name:count for name,count in name_counts.items() if count>1}
+    seen=Counter()
     doc={"asset":{"version":"2.0","generator":"Schaffernak clean rebuild"},
          "scene":0,"scenes":[{"nodes":[]}],"nodes":[],"meshes":[],
          "materials":[],"bufferViews":[],"accessors":[],"buffers":[]}
@@ -47,9 +50,14 @@ def build(master_path,interior_path,output):
         if bounds is not None:a["min"],a["max"]=bounds
         idx=len(doc["accessors"]);doc["accessors"].append(a);return idx
     for o in items:
+        # Same-name frame segments are separate geometry. Preserve them all.
+        original_name=o["name"]
+        seen[original_name]+=1
+        export_name=(original_name if name_counts[original_name]==1 else
+                     f"{original_name}__Teil_{seen[original_name]}")
         vertices=[(float(x),float(z),-float(y)) for x,y,z in o["v"]]
         faces=[int(i) for face in o["f"] for i in face]
-        if not vertices or not faces or len(faces)%3:raise ValueError("Bad master mesh "+o["name"])
+        if not vertices or not faces or len(faces)%3:raise ValueError("Bad master mesh "+original_name)
         flat=[v for p in vertices for v in p]
         pos=accessor(struct.pack("<"+"f"*len(flat),*flat),5126,"VEC3",len(vertices),
             ([min(p[i] for p in vertices) for i in range(3)],
@@ -66,10 +74,10 @@ def build(master_path,interior_path,output):
             if glass:mat["alphaMode"]="BLEND"
             mats[key]=len(doc["materials"]);doc["materials"].append(mat)
         mesh=len(doc["meshes"])
-        doc["meshes"].append({"name":o["name"],"primitives":[{"attributes":{"POSITION":pos},
+        doc["meshes"].append({"name":export_name,"primitives":[{"attributes":{"POSITION":pos},
                               "indices":idx,"material":mats[key]}]})
         node=len(doc["nodes"])
-        doc["nodes"].append({"name":o["name"],"mesh":mesh})
+        doc["nodes"].append({"name":export_name,"mesh":mesh})
         doc["scenes"][0]["nodes"].append(node)
 
     v3,source=read_glb(interior_path)
@@ -134,11 +142,13 @@ def build(master_path,interior_path,output):
     save(output,doc,blob)
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
-            "groups":dict(groups),"duplicate_names":0,
+            "groups":dict(groups),"original_repeated_names":repeated,
+            "renamed_frame_parts":sum(repeated.values()),
             "window_policy":"Original exterior windows preserved; V3 window changes pending separate verification.",
             "source_policy":"No V4/V5 and no V3 exterior geometry used."}
     Path(str(output)+".report.json").write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding="utf8")
     print(f"OK: {len(items)} original exterior + {len(selected)} V3 interior meshes = {len(doc['nodes'])} total")
+    print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Report:",str(output)+".report.json")
 
 if __name__=="__main__":
