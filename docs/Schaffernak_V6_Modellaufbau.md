@@ -46,3 +46,7 @@ Die bisherigen V3/V4/V5-Dateien werden nicht überschrieben. Die neue Datei hei�
 - Die beiden OG-Giebelfenster bleiben zur Vermeidung widersprüchlicher Wandöffnungen zunächst im Original-Außenstand. Die Nutzerkorrektur „beide bis Fußboden“ ist weiterhin offen.
 
 **Nächste Sichtprüfung:** Innenansicht KG/EG/OG im Viewer; EG-Büro/Wohnen bleibt offen, kein durchgehender Wandzug. Danach Kamin und bodentiefe Fenster planbasiert korrigieren.
+
+## OG – Wandlücken oberhalb der Türen
+
+Die V3-Geometrie besitzt sechs OG-Türstürze (U136, U138, U139, U140, U141 und U496), deren Oberkante bei 5,17 m liegt, während die angrenzenden OG-Innenwände bis 5,52 m reichen. Das erzeugt eine 35-cm-Lücke **oberhalb** jeder Tür. Der V6-Builder ergänzt sechs gesondert benannte Wandstücke auf der Grundfläche des jeweiligen Türsturzes bis zur Wandoberkante. Die Türlichte unterhalb des Sturzes bleibt unverändert. Der Export stoppt bei unerwarteter Türzahl oder Wandhöhe, statt fragwürdige Geometrie zu erzeugen. Andere mögliche OG-Wandlücken sind noch anhand einer Innenansicht zu lokalisieren.
