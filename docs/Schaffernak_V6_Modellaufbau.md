@@ -62,3 +62,11 @@ Die Brüstung zwischen den Treppenläufen hat keine waagrechte Oberkante: Am obe
 ## EG – Türsturz-Lücken (31.10.2026)
 
 Die aus V3 ausgelesenen fünf EG-Türstürze `U186`, `U119`, `U111`, `U110`, `U107` enden bei y=2,20 m. Alle 26 regulären EG-Innenwandsegmente reichen bis y=2,70 m. Der V6-Builder ergänzt daher über den fünf Türstürzen jeweils ein 0,50 m hohes Wandstück mit identischer Grundfläche zum Türsturz. Die lichte Türhöhe und Türpfosten bleiben unverändert. Andere markierte Anschlüsse müssen weiterhin auf ihre tatsächliche Ursache überprüft werden; das Modell wird nicht pauschal geschlossen.
+
+## Verbindliche Innenraumhöhen und EG-Wandanschlüsse
+
+Nutzerbestätigung: Die **lichte Raumhöhe im EG und OG beträgt jeweils 2,50 m**. Die im V3-Modell vorhandenen Rohbau-Wandoberkanten EG y=2,70 m und OG y=5,52 m dürfen nicht ohne Kenntnis von Rohdecke, Fußbodenaufbau und abgehängten Decken auf 2,50 m gekürzt werden. Tür- und Wandöffnungen müssen an den entsprechenden tatsächlichen Deckenaufbau anschließen.
+
+Im EG zeigen Nutzerbilder eine vom Boden bis zur Decke fehlende Wandfläche an einem T-förmigen Anschluss; **kein Vorsprung** soll hinzugefügt werden. Die Lage ist bildlich, aber noch nicht eindeutig einer V3-Wand-ID zugeordnet. Das Skript `scripts/audit_interior_wall_gaps.py` prüft zunächst kurze kollineare Unterbrechungen, modellierte Türen und verdächtige T-Anschlüsse. Es ändert keine Geometrie. Keine blinde Auffüllung von Durchgängen oder Treppenöffnungen.
+
+Aufruf: `python3 scripts/audit_interior_wall_gaps.py public/models/Schaffernak_Haus_V3.glb --floor EG`.
