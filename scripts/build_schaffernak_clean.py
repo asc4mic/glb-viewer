@@ -143,9 +143,37 @@ def build(master_path,interior_path,output):
         node={k:v for k,v in n.items() if k not in ("children","skin","camera")}
         node["mesh"]=mesh(n["mesh"])
         i=len(doc["nodes"]);doc["nodes"].append(node);doc["scenes"][0]["nodes"].append(i)
+    # Plan-safe small KG wall junction: original V3 walls 017 and 002
+    # leave a 19 mm horizontal gap where both wall boxes overlap.
+    # Add one small infill, without touching openings, other floors or V3.
+    gap_name="Innen__Innenwand_DXF_KG_Anschluss_003"
+    if gap_name in chosen or gap_name in names:
+        raise ValueError("KG junction correction name already exists")
+    x0,x1=6.41,6.45
+    y0,y1=-2.69,-0.24
+    z0,z1=-7.41,-7.22
+    verts=[(x0,y0,z0),(x1,y0,z0),(x1,y1,z0),(x0,y1,z0),
+           (x0,y0,z1),(x1,y0,z1),(x1,y1,z1),(x0,y1,z1)]
+    faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
+           1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
+    flat=[v for vertex in verts for v in vertex]
+    pos=accessor(struct.pack("<"+"f"*len(flat),*flat),5126,"VEC3",8,
+                 ([x0,y0,z0],[x1,y1,z1]))
+    inds=accessor(struct.pack("<"+"I"*len(faces),*faces),5125,"SCALAR",len(faces),target=34963)
+    material=len(doc["materials"])
+    doc["materials"].append({"name":"KG_Innenwand_Anschluss","doubleSided":True,
+       "pbrMetallicRoughness":{"baseColorFactor":[0.83,0.82,0.79,1.0],
+                              "metallicFactor":0,"roughnessFactor":0.9}})
+    mi=len(doc["meshes"])
+    doc["meshes"].append({"name":gap_name,"primitives":[{"attributes":{"POSITION":pos},
+        "indices":inds,"material":material,"mode":4}]})
+    ni=len(doc["nodes"])
+    doc["nodes"].append({"name":gap_name,"mesh":mi})
+    doc["scenes"][0]["nodes"].append(ni)
     save(output,doc,blob)
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
+            "interior_junction_fixes":[gap_name],
             "groups":dict(groups),"railing_update":railing_report,
             "original_repeated_names":repeated,
             "renamed_frame_parts":sum(repeated.values()),
@@ -155,6 +183,7 @@ def build(master_path,interior_path,output):
     print(f"OK: {len(items)} original exterior + {len(selected)} V3 interior meshes = {len(doc['nodes'])} total")
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Railing:",railing_report)
+    print("Interior: added KG wall junction fix",gap_name)
     print("Report:",str(output)+".report.json")
 
 if __name__=="__main__":
