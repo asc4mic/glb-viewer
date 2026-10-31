@@ -58,3 +58,7 @@ Die Nutzeransicht zeigt eine fälschlich raumhohe Trennwand zwischen den beiden 
 ### Nachtrag: geneigte Brüstungsoberkante
 
 Die Brüstung zwischen den Treppenläufen hat keine waagrechte Oberkante: Am oberen Ende des Treppenlaufs (z=−5,38 m) liegt die Oberkante bei y=4,00 m, am unteren Ende (z=−6,44 m) bei y=3,00 m. Dazwischen verläuft sie geradlinig geneigt. Das ist eine schematische Visualisierung der Schräge; die endgültige Brüstungshöhe über den einzelnen Stufen ist vor Ausführung zu prüfen. Die Stufen bleiben unverändert.
+
+## EG – Türsturz-Lücken (31.10.2026)
+
+Die aus V3 ausgelesenen fünf EG-Türstürze `U186`, `U119`, `U111`, `U110`, `U107` enden bei y=2,20 m. Alle 26 regulären EG-Innenwandsegmente reichen bis y=2,70 m. Der V6-Builder ergänzt daher über den fünf Türstürzen jeweils ein 0,50 m hohes Wandstück mit identischer Grundfläche zum Türsturz. Die lichte Türhöhe und Türpfosten bleiben unverändert. Andere markierte Anschlüsse müssen weiterhin auf ihre tatsächliche Ursache überprüft werden; das Modell wird nicht pauschal geschlossen.
