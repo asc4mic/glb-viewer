@@ -2,7 +2,7 @@
 """Restore complete original exterior, including terrain, roof details, columns and railings.
 
 Pure Python stdlib: merges the original selected meshes into the V3 GLB without
-changing interior walls, windows, carport or other geometry. Writes V4 GLB.
+changing the corrected interior walls and windows. Writes V5 GLB.
 """
 import argparse
 import json
@@ -54,7 +54,7 @@ def write_glb(path, gltf, binary):
 def restore(source, terrain_json, target):
     gltf, binary = read_glb(source)
     items = json.loads(Path(terrain_json).read_text(encoding="utf-8"))
-    original_names = {n.get("name") for n in gltf["nodes"]}
+    original_names = {n.get("name") for n in gltf["nodes"] if n.get("name") not in OLD_TERRAIN}
     terrain = [o for o in items if o.get("group") in RESTORE_GROUPS
                and o.get("name") not in original_names]
     if not terrain:
@@ -68,7 +68,6 @@ def restore(source, terrain_json, target):
     root["children"] = [
         idx for idx in root["children"]
         if gltf["nodes"][idx].get("name") not in OLD_TERRAIN
-        and gltf["nodes"][idx].get("name") not in TERRAIN_NAMES
     ]
     mats = gltf.setdefault("materials", [])
 
