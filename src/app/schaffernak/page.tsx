@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
-import SimpleGLBViewer from "@/src/components/SimpleGLBViewer";
+import SchaffernakIntegratedViewer from "@/src/components/SchaffernakIntegratedViewer";
 
 function getVersionedModelUrl() {
   const filePath = path.join(process.cwd(), "public/models/Schaffernak_Haus.glb");
@@ -11,6 +11,7 @@ function getVersionedModelUrl() {
 }
 
 export default function SchaffernakPage() {
+  const interiorAvailable = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V3.glb"));
   const variants = [
     { id: "A", label: "A · 8 Stützen", url: "/models/Schaffernak_Haus_A.glb", labelsUrl: "/support-labels_A.json" },
     { id: "B", label: "B · 8 Stützen / 8 cm", url: "/models/Schaffernak_Haus_B.glb", labelsUrl: "/support-labels_B.json" },
@@ -27,7 +28,7 @@ export default function SchaffernakPage() {
             </p>
             <h1 className="text-3xl font-bold tracking-tight">Schaffernak Haus</h1>
             <p className="mt-2 text-sm text-white/50">
-              Das Modell lädt direkt ohne Upload. Link kann direkt geteilt werden.
+              Außenmodelle A/B/C und Innen-/Außenmodell V3 mit Geschossauswahl.
             </p>
           </div>
           <Link
@@ -38,7 +39,7 @@ export default function SchaffernakPage() {
           </Link>
         </div>
 
-        <SimpleGLBViewer url={variants[0].url} variants={variants} />
+        <SchaffernakIntegratedViewer variants={variants} interiorAvailable={interiorAvailable} />
       </div>
     </main>
   );
