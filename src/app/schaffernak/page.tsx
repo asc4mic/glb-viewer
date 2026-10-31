@@ -11,6 +11,7 @@ function getVersionedModelUrl() {
 }
 
 export default function SchaffernakPage() {
+  const cleanV6Available = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V6.glb"));
   const exteriorV5Available = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V5.glb"));
   const terrainV4Available = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V4.glb"));
   const interiorAvailable = fs.existsSync(path.join(process.cwd(), "public/models/Schaffernak_Haus_V3.glb"));
@@ -30,7 +31,7 @@ export default function SchaffernakPage() {
             </p>
             <h1 className="text-3xl font-bold tracking-tight">Schaffernak Haus</h1>
             <p className="mt-2 text-sm text-white/50">
-              Außenmodelle A/B/C und Innen-/Außenmodell V3 mit Geschossauswahl.
+              Bereinigtes Gesamtmodell V6: Original-Außenanlage und V3-Innenräume.
             </p>
           </div>
           <Link
@@ -41,7 +42,7 @@ export default function SchaffernakPage() {
           </Link>
         </div>
 
-        <SchaffernakIntegratedViewer variants={variants} interiorAvailable={interiorAvailable} terrainV4Available={terrainV4Available} exteriorV5Available={exteriorV5Available} />
+        <SchaffernakIntegratedViewer variants={variants} interiorAvailable={interiorAvailable} terrainV4Available={terrainV4Available} exteriorV5Available={exteriorV5Available} cleanV6Available={cleanV6Available} />
       </div>
     </main>
   );
