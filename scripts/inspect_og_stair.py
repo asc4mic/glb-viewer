@@ -28,7 +28,7 @@ def bounds(doc,blob,mesh):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("glb",type=Path)
-    ap.add_argument("--floor",choices=("OG","KG"),default="OG")
+    ap.add_argument("--floor",choices=("OG","EG","KG"),default="OG")
     args=ap.parse_args()
     doc,blob=read_glb(args.glb)
     for node in doc["nodes"]:
@@ -36,6 +36,9 @@ def main():
         if "mesh" not in node or not (
             (args.floor=="OG" and (name.startswith("Innen__Innenwand_DXF_OG_") or
              ("OG" in name and any(k in name.lower() for k in ("stiege","treppe","bruestung","brüstung","geländer","gelaender","tuer"))))) or
+            (args.floor=="EG" and (name.startswith("Innen__Innenwand_DXF_EG_") or
+                ("EG_Tuer_" in name and "OG" not in name) or
+                ("EG" in name and "Kamin" in name))) or
             (args.floor=="KG" and (
                 name.startswith("Innen__Treppe_KG_EG_") or
                 name.startswith("Innen__Innenwand_DXF_KG_") or
