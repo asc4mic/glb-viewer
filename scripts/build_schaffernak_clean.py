@@ -5,6 +5,7 @@ Requires Python standard library only. Does not silently replace windows.
 import argparse, json, re, struct
 from pathlib import Path
 from collections import Counter
+from balcony_glass_on_slab import replace_glass_railing
 
 def read_glb(path):
     raw=Path(path).read_bytes()
@@ -34,6 +35,9 @@ def build(master_path,interior_path,output):
     names=[o["name"] for o in items]
     if len(items)<600 or not required.issubset(groups):
         raise ValueError("Original master incomplete or missing required exterior groups")
+    items, railing_report=replace_glass_railing(items)
+    names=[o["name"] for o in items]
+    groups=Counter(o["group"] for o in items)
     name_counts=Counter(names)
     repeated={name:count for name,count in name_counts.items() if count>1}
     seen=Counter()
@@ -142,13 +146,15 @@ def build(master_path,interior_path,output):
     save(output,doc,blob)
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
-            "groups":dict(groups),"original_repeated_names":repeated,
+            "groups":dict(groups),"railing_update":railing_report,
+            "original_repeated_names":repeated,
             "renamed_frame_parts":sum(repeated.values()),
             "window_policy":"Original exterior windows preserved; V3 window changes pending separate verification.",
             "source_policy":"No V4/V5 and no V3 exterior geometry used."}
     Path(str(output)+".report.json").write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding="utf8")
     print(f"OK: {len(items)} original exterior + {len(selected)} V3 interior meshes = {len(doc['nodes'])} total")
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
+    print("Railing:",railing_report)
     print("Report:",str(output)+".report.json")
 
 if __name__=="__main__":
