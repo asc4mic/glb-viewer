@@ -50,3 +50,7 @@ Die bisherigen V3/V4/V5-Dateien werden nicht überschrieben. Die neue Datei hei�
 ## OG – Wandlücken oberhalb der Türen
 
 Die V3-Geometrie besitzt sechs OG-Türstürze (U136, U138, U139, U140, U141 und U496), deren Oberkante bei 5,17 m liegt, während die angrenzenden OG-Innenwände bis 5,52 m reichen. Das erzeugt eine 35-cm-Lücke **oberhalb** jeder Tür. Der V6-Builder ergänzt sechs gesondert benannte Wandstücke auf der Grundfläche des jeweiligen Türsturzes bis zur Wandoberkante. Die Türlichte unterhalb des Sturzes bleibt unverändert. Der Export stoppt bei unerwarteter Türzahl oder Wandhöhe, statt fragwürdige Geometrie zu erzeugen. Andere mögliche OG-Wandlücken sind noch anhand einer Innenansicht zu lokalisieren.
+
+## OG-Stiege: zentrale Brüstung (31.10.2026)
+
+Die Nutzeransicht zeigt eine fälschlich raumhohe Trennwand zwischen den beiden Treppenläufen. Der V3-Geometrieauszug bestätigt die Segmente `Innen__Innenwand_DXF_OG_041` (x=4,855–4,985 m) und `Innen__Innenwand_DXF_OG_026` (x=4,985–5,115 m), beide z=−6,440 bis −5,380 m und y=3,000–5,520 m. Die V6-Erzeugung **überspringt nur diese beiden V3-Wände** und setzt eine massive Brüstung `Innen__OG_Stiege_Bruestung_zwischen_Laeufen` über deren kombinierte Grundfläche, y=3,00–4,00 m (vorläufig 1,00 m Höhe). Die restlichen OG-Wände und die EG–OG-Treppenläufe bleiben unverändert. Eine zweite im Screenshot markierte schmale Wandstelle wird nicht ohne eindeutige Zuordnung verändert. Geometrieprüfung im Viewer ausstehend.
