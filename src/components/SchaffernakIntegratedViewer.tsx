@@ -102,8 +102,12 @@ export default function SchaffernakIntegratedViewer({
           </div>
           <div className="relative h-[60vh] min-h-[430px] overflow-hidden rounded-3xl border border-white/10 bg-slate-950">
             <Canvas camera={{ position: [16, 12, 17], fov: 45 }} gl={{ antialias: true }}>
-              <ambientLight intensity={1.8} />
-              <directionalLight position={[8, 15, 10]} intensity={2.2} />
+              <ambientLight intensity={1.35} />
+              <hemisphereLight args={["#f5f8ff", "#c7cbd1", 1.4]} />
+              <directionalLight position={[12, 16, 12]} intensity={1.7} />
+              <directionalLight position={[-12, 12, -12]} intensity={1.45} />
+              <directionalLight position={[-12, 9, 12]} intensity={0.85} />
+              <directionalLight position={[12, 9, -12]} intensity={0.85} />
               <Suspense fallback={null}>
                 <InteriorModel url="/models/Schaffernak_Haus_V3.glb"
                   floor={floor} walls={walls} roof={roof} terrain={terrain} fireplace={fireplace} />
