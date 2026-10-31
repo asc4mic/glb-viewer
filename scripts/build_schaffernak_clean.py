@@ -139,10 +139,59 @@ def build(master_path,interior_path,output):
             m["primitives"]=prims
             meshmap[i]=len(doc["meshes"]);doc["meshes"].append(m)
         return meshmap[i]
+    stair_partition_names={"Innen__Innenwand_DXF_OG_041","Innen__Innenwand_DXF_OG_026"}
+    if not stair_partition_names.issubset(set(chosen)):
+        raise ValueError("OG stair partition walls not found; refusing partial modification")
     for _,n in selected:
+        if n["name"] in stair_partition_names:
+            continue  # replaced below with a low parapet; keep original V3 intact
         node={k:v for k,v in n.items() if k not in ("children","skin","camera")}
         node["mesh"]=mesh(n["mesh"])
         i=len(doc["nodes"]);doc["nodes"].append(node);doc["scenes"][0]["nodes"].append(i)
+    # OG central partition between stair flights A and B:
+    # Original walls 041 and 026 reach the ceiling (Y=5.52).
+    # Replace both by one low solid parapet, retaining their combined footprint.
+    # Original stair treads and landings are imported unchanged.
+    stair_bounds=[]
+    for _,wall in selected:
+        if wall["name"] not in stair_partition_names: continue
+        if any(k in wall for k in ("matrix","rotation","translation","scale")):
+            raise ValueError("Stair partition has a transform; manual review required")
+        prims=v3["meshes"][wall["mesh"]]["primitives"]
+        if len(prims)!=1: raise ValueError("Unexpected multi-primitive stair partition")
+        a=v3["accessors"][prims[0]["attributes"]["POSITION"]]
+        stair_bounds.append((a["min"],a["max"]))
+    if len(stair_bounds)!=2: raise ValueError("Expected two stair partition segments")
+    x0=min(lo[0] for lo,hi in stair_bounds)
+    x1=max(hi[0] for lo,hi in stair_bounds)
+    z0=min(lo[2] for lo,hi in stair_bounds)
+    z1=max(hi[2] for lo,hi in stair_bounds)
+    y0=min(lo[1] for lo,hi in stair_bounds)
+    y1=4.00  # 1.00 m above OG wall base at 3.00 m; schematic
+    if not (4.84<x0<4.87 and 5.10<x1<5.13 and
+            -6.46<z0<-6.42 and -5.40<z1<-5.36 and
+            2.99<y0<3.01 and all(abs(hi[1]-5.52)<.02 for lo,hi in stair_bounds)):
+        raise ValueError("OG stair partition footprint changed; refusing to alter geometry")
+    verts=[(x0,y0,z0),(x1,y0,z0),(x1,y0,z1),(x0,y0,z1),
+           (x0,y1,z0),(x1,y1,z0),(x1,y1,z1),(x0,y1,z1)]
+    faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
+           1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
+    flat=[v for vertex in verts for v in vertex]
+    pos=accessor(struct.pack("<"+"f"*len(flat),*flat),5126,"VEC3",8,
+                 ([x0,y0,z0],[x1,y1,z1]))
+    inds=accessor(struct.pack("<"+"I"*len(faces),*faces),5125,"SCALAR",len(faces),target=34963)
+    parapet_mat=len(doc["materials"])
+    doc["materials"].append({"name":"OG_Stiege_Bruestung_massiv",
+        "doubleSided":True,"pbrMetallicRoughness":{
+            "baseColorFactor":[0.83,0.82,0.79,1.0],
+            "metallicFactor":0,"roughnessFactor":0.9}})
+    parapet_name="Innen__OG_Stiege_Bruestung_zwischen_Laeufen"
+    mi=len(doc["meshes"])
+    doc["meshes"].append({"name":parapet_name,"primitives":[
+        {"attributes":{"POSITION":pos},"indices":inds,"material":parapet_mat,"mode":4}]})
+    ni=len(doc["nodes"])
+    doc["nodes"].append({"name":parapet_name,"mesh":mi})
+    doc["scenes"][0]["nodes"].append(ni)
     # Plan-safe small KG wall junction: original V3 walls 017 and 002
     # leave a 19 mm horizontal gap where both wall boxes overlap.
     # Add one small infill, without touching openings, other floors or V3.
@@ -221,6 +270,9 @@ def build(master_path,interior_path,output):
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
             "interior_junction_fixes":[gap_name],
+            "og_stair_partition_replaced":sorted(stair_partition_names),
+            "og_stair_parapet":parapet_name,
+            "og_stair_parapet_top_m":y1,
             "og_door_header_fixes":og_header_fixes,
             "groups":dict(groups),"railing_update":railing_report,
             "original_repeated_names":repeated,
@@ -232,6 +284,7 @@ def build(master_path,interior_path,output):
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Railing:",railing_report)
     print("Interior: added KG wall junction fix",gap_name)
+    print("Interior: OG stair partition replaced with low parapet",parapet_name)
     print("Interior: closed",len(og_header_fixes),"OG gaps above door lintels")
     print("Report:",str(output)+".report.json")
 
