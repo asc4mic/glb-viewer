@@ -87,8 +87,8 @@ def build(master_path,interior_path,output):
         parent=parents.get(i)
         while parent is not None:
             ancestor=v3["nodes"][parent]
-            if any(k in ancestor for k in ("translation","rotation","scale","matrix")):
-                raise ValueError("V3 has transformed parent; unsafe alignment")
+            if ancestor.get("translation", [0,0,0]) != [0,0,0] or ancestor.get("rotation", [0,0,0,1]) != [0,0,0,1] or ancestor.get("scale", [1,1,1]) != [1,1,1] or ancestor.get("matrix", [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]) != [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]:
+                raise ValueError("V3 has non-identity parent transform; unsafe alignment")
             parent=parents.get(parent)
         if any(k in n for k in ("skin","children")):
             raise ValueError("Unsupported skinned or grouped interior mesh")
