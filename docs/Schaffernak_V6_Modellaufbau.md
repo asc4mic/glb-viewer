@@ -70,3 +70,7 @@ Nutzerbestätigung: Die **lichte Raumhöhe im EG und OG beträgt jeweils 2,50 m*
 Im EG zeigen Nutzerbilder eine vom Boden bis zur Decke fehlende Wandfläche an einem T-förmigen Anschluss; **kein Vorsprung** soll hinzugefügt werden. Die Lage ist bildlich, aber noch nicht eindeutig einer V3-Wand-ID zugeordnet. Das Skript `scripts/audit_interior_wall_gaps.py` prüft zunächst kurze kollineare Unterbrechungen, modellierte Türen und verdächtige T-Anschlüsse. Es ändert keine Geometrie. Keine blinde Auffüllung von Durchgängen oder Treppenöffnungen.
 
 Aufruf: `python3 scripts/audit_interior_wall_gaps.py public/models/Schaffernak_Haus_V3.glb --floor EG`.
+
+## EG – Ergebnis der Wandanschlussprüfung
+
+Die V3-Prüfung meldete vier 13-cm-Unterbrechungen und zwei T-Anschluss-Kandidaten. Einige der scheinbaren Lücken sind bereits von querlaufenden Wänden oder den V3-Anschlussstücken `EG_Anschluss_001/002` besetzt; diese dürfen nicht doppelt aufgefüllt werden. Ein konkreter, geometrisch unbelegter Anschluss liegt zwischen `Innen__Innenwand_DXF_EG_011` (Ende x=8,67), `...EG_012` (Beginn x=8,80) und `...EG_038` (Ende z=−5,25). V6 ergänzt **nur dort** `Innen__Innenwand_DXF_EG_Anschluss_003` über x=8,67–8,80 m, z=−5,25 bis −5,12 m und Rohwandhöhe y=0,03–2,70 m. Die bestätigte lichte Raumhöhe beträgt weiterhin 2,50 m; der Rohbau-/Deckenaufbau wird nicht eigenmächtig verändert. Andere im Screenshot sichtbare Fugen bleiben zur Sichtprüfung offen.
