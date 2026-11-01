@@ -50,12 +50,16 @@ def main():
                 if overlap(d[side],a[side])>0.025 and overlap(d[main],(g0,g1))>0.01:
                     door_hit.append(d["name"])
             candidates.append((gap,a,b,main,side,g0,g1,door_hit))
-    print("\nCollinear wall interruptions:")
+    print("\nCollinear wall interruptions (including covered junctions):")
     if not candidates:print("  No short collinear gaps detected; inspect perpendicular joints.")
     for gap,a,b,main,side,g0,g1,door_hit in sorted(candidates,key=lambda c:c[0]):
         print(f"  {gap:.3f}m {main}={g0:.3f}..{g1:.3f}; {a['name']} / {b['name']}")
+        covering=[w["name"] for w in walls if w is not a and w is not b and
+                  overlap(w[main],(g0,g1))>=gap-0.008 and
+                  overlap(w[side],a[side])>=min(0.025,a[side][1]-a[side][0])-0.005]
         if door_hit:print("    DOOR: "+", ".join(door_hit)+" (do not fill)")
-        else:print("    No matching modeled door lintel; visual check required")
+        elif covering:print("    COVERED by "+", ".join(covering)+" (do not fill)")
+        else:print("    UNCOVERED candidate; verify against plan before filling")
     print("\nPerpendicular near-miss T-joints (within 0.30m):")
     seen=set();count=0
     for a in walls:
@@ -71,7 +75,11 @@ def main():
                     key=(a["name"],b["name"],round(side_gap,3))
                     if key in seen:continue
                     seen.add(key);count+=1
-                    print(f"  {side_gap:.3f}m: {a['name']} -> {b['name']} (check T-junction)")
+                    cover=[w["name"] for w in walls if w is not a and w is not b and
+                           overlap(w[main],(end,end+0.001))>0 and
+                           overlap(w[side],a[side])>0.02]
+                    label="potentially covered by "+", ".join(cover) if cover else "check T-junction"
+                    print(f"  {side_gap:.3f}m: {a['name']} -> {b['name']} ({label})")
     if not count:print("  None within threshold.")
     print("\nNo model was changed. Door gaps and deliberate openings require plan verification.")
 if __name__=="__main__":main()
