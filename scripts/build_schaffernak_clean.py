@@ -139,6 +139,26 @@ def build(master_path,interior_path,output):
             m["primitives"]=prims
             meshmap[i]=len(doc["meshes"]);doc["meshes"].append(m)
         return meshmap[i]
+    # Reverse EG->OG stair start side by reflecting only the two stair flights
+    # about the midpoint of their shared opening (X=4.97 m).
+    # This swaps A and B horizontally without changing any tread height,
+    # stair pitch, opening, landing elevation, or neighboring walls.
+    # The symmetric landing does not need to be reflected.
+    stair_steps=[n for _,n in selected if re.fullmatch(
+        r"Innen__Treppe_EG_OG_Lauf_[AB]_Stufe_[0-9]+",n["name"])]
+    if len(stair_steps)!=18 or len([n for _,n in selected if
+            n["name"]=="Innen__Treppe_EG_OG_Wendepodest"])!=1:
+        raise ValueError("Expected 18 EG-OG treads and one landing; stair unchanged")
+    for n in stair_steps:
+        if any(k in n for k in ("matrix","translation","rotation","scale")):
+            raise ValueError("Unexpected EG-OG tread transform; stair unchanged")
+        primitive=v3["meshes"][n["mesh"]]["primitives"]
+        if len(primitive)!=1:raise ValueError("Unexpected stair tread primitives")
+        a=v3["accessors"][primitive[0]["attributes"]["POSITION"]]
+        lo,hi=a["min"],a["max"]
+        if not (3.83<=lo[0]<=5.19 and 4.75<=hi[0]<=6.11 and
+                -6.90<=lo[2]<-5.17 and -6.90<hi[2]<=-5.17):
+            raise ValueError("EG-OG stair footprint changed; stair unchanged")
     stair_partition_names={"Innen__Innenwand_DXF_OG_041","Innen__Innenwand_DXF_OG_026"}
     if not stair_partition_names.issubset(set(chosen)):
         raise ValueError("OG stair partition walls not found; refusing partial modification")
@@ -147,6 +167,10 @@ def build(master_path,interior_path,output):
             continue  # replaced below with a low parapet; keep original V3 intact
         node={k:v for k,v in n.items() if k not in ("children","skin","camera")}
         node["mesh"]=mesh(n["mesh"])
+        if n in stair_steps:
+            # Reflection about X=4.97; three.js handles negative-scale winding.
+            node["translation"]=[9.94,0.0,0.0]
+            node["scale"]=[-1.0,1.0,1.0]
         i=len(doc["nodes"]);doc["nodes"].append(node);doc["scenes"][0]["nodes"].append(i)
     # OG central partition between stair flights A and B:
     # Original walls 041 and 026 reach the ceiling (Y=5.52).
@@ -364,6 +388,7 @@ def build(master_path,interior_path,output):
             "exterior_meshes":len(items),"interior_meshes":len(selected),
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
+            "eg_og_stair_direction":"flights mirrored about X=4.97m; tread elevations unchanged",
             "og_stair_parapet":parapet_name,
             "og_stair_parapet_top_m":{"lower_end":lower_top,"upper_end":upper_top},
             "og_door_header_fixes":og_header_fixes,
@@ -380,6 +405,7 @@ def build(master_path,interior_path,output):
     print("Interior: added KG wall junction fix",gap_name)
     print("Interior: added EG T-junction fix",eg_joint_name)
     print("Interior: OG stair partition replaced with sloped parapet",parapet_name)
+    print("Interior: EG-OG stair flights mirrored; start side reversed (18 treads)")
     print("Interior: closed",len(og_header_fixes),"OG gaps above door lintels")
     print("Interior: closed",len(eg_header_fixes),"EG gaps above door lintels")
     print("Report:",str(output)+".report.json")
