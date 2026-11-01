@@ -224,6 +224,47 @@ def build(master_path,interior_path,output):
     ni=len(doc["nodes"])
     doc["nodes"].append({"name":gap_name,"mesh":mi})
     doc["scenes"][0]["nodes"].append(ni)
+    # EG: one genuine 13 cm T-junction gap in the DXF wall network.
+    # EG_011 ends at x=8.67, EG_012 begins at x=8.80, and EG_038
+    # terminates at z=-5.25. Unlike the other reported gaps, no wall
+    # occupies this 0.13 x 0.13 m footprint.
+    eg_joint_name="Innen__Innenwand_DXF_EG_Anschluss_003"
+    eg_expected={
+        "Innen__Innenwand_DXF_EG_011":([8.18,0.03,-5.25],[8.67,2.70,-5.12]),
+        "Innen__Innenwand_DXF_EG_012":([8.80,0.03,-5.25],[10.72,2.70,-5.12]),
+        "Innen__Innenwand_DXF_EG_038":([8.67,0.03,-6.45],[8.80,2.70,-5.25]),
+    }
+    if eg_joint_name in chosen or eg_joint_name in names:
+        raise ValueError("EG junction fix already present in source")
+    for _,wall in selected:
+        if wall["name"] not in eg_expected:continue
+        if any(k in wall for k in ("matrix","translation","rotation","scale")):
+            raise ValueError("EG junction source has transform")
+        primitive=v3["meshes"][wall["mesh"]]["primitives"][0]
+        a=v3["accessors"][primitive["attributes"]["POSITION"]]
+        expected_lo,expected_hi=eg_expected.pop(wall["name"])
+        if any(abs(a["min"][i]-expected_lo[i])>0.015 or
+               abs(a["max"][i]-expected_hi[i])>0.015 for i in range(3)):
+            raise ValueError("EG junction source bounds changed: "+wall["name"])
+    if eg_expected:raise ValueError("Missing EG junction neighbors: "+str(list(eg_expected)))
+    ex0,ex1=8.67,8.80
+    ey0,ey1=0.03,2.70
+    ez0,ez1=-5.25,-5.12
+    # A full-height fill follows the adjacent RAW wall meshes. The
+    # confirmed 2.50 m FINISHED clear height is not the raw mesh height.
+    ev=[(ex0,ey0,ez0),(ex1,ey0,ez0),(ex1,ey0,ez1),(ex0,ey0,ez1),
+        (ex0,ey1,ez0),(ex1,ey1,ez0),(ex1,ey1,ez1),(ex0,ey1,ez1)]
+    ef=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
+        1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
+    ep=accessor(struct.pack("<"+"f"*24,*[v for xyz in ev for v in xyz]),
+                5126,"VEC3",8,([ex0,ey0,ez0],[ex1,ey1,ez1]))
+    ei=accessor(struct.pack("<"+"I"*len(ef),*ef),5125,"SCALAR",len(ef),target=34963)
+    em=len(doc["meshes"])
+    doc["meshes"].append({"name":eg_joint_name,"primitives":[{
+        "attributes":{"POSITION":ep},"indices":ei,"material":material,"mode":4}]})
+    en=len(doc["nodes"])
+    doc["nodes"].append({"name":eg_joint_name,"mesh":em})
+    doc["scenes"][0]["nodes"].append(en)
     # OG: V3 door lintels stop at y=5.17 m while all adjacent OG walls
     # continue to y=5.52 m. Fill ONLY the six proven 35 cm top gaps.
     # Preserve the original door clear openings and lintels below.
@@ -321,7 +362,7 @@ def build(master_path,interior_path,output):
     save(output,doc,blob)
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
-            "interior_junction_fixes":[gap_name],
+            "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
             "og_stair_parapet":parapet_name,
             "og_stair_parapet_top_m":{"lower_end":lower_top,"upper_end":upper_top},
@@ -337,6 +378,7 @@ def build(master_path,interior_path,output):
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Railing:",railing_report)
     print("Interior: added KG wall junction fix",gap_name)
+    print("Interior: added EG T-junction fix",eg_joint_name)
     print("Interior: OG stair partition replaced with sloped parapet",parapet_name)
     print("Interior: closed",len(og_header_fixes),"OG gaps above door lintels")
     print("Interior: closed",len(eg_header_fixes),"EG gaps above door lintels")
