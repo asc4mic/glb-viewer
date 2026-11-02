@@ -28,6 +28,53 @@ def save(path,doc,blob):
     Path(path).parent.mkdir(parents=True,exist_ok=True)
     Path(path).write_bytes(out)
 
+def restore_og_left_gable_floor_windows(items):
+    """Restore both confirmed floor-height windows on the left OG gable.
+
+    Exterior master axes: (x, depth, elevation). The OG slab top is z=2.97.
+    Do not modify any other windows, the floor slab or the roof.
+    """
+    import copy
+    items=copy.deepcopy(items)
+    byname={}
+    for o in items:
+        byname.setdefault(o["name"],[]).append(o)
+    expected={
+        0:{"sill":3.89,"depth":(5.975,6.795),"under":"OG_left_unten3"},
+        1:{"sill":4.54,"depth":(1.04,3.16),"under":"OG_left_unten1"},
+    }
+    floor=2.97
+    for i,config in expected.items():
+        glassname=f"OG_left_Glas{i}"
+        glass=byname.get(glassname,[])
+        under=byname.get(config["under"],[])
+        if len(glass)!=1 or len(under)!=1:
+            raise ValueError("OG gable window source missing: "+glassname)
+        original_sill=config["sill"]
+        for o in (glass[0],under[0]):
+            low=min(v[2] for v in o["v"])
+            if abs(low-(original_sill if o is glass[0] else floor))>0.015:
+                raise ValueError("Unexpected OG gable window geometry: "+o["name"])
+        # Remove the solid wall underneath the existing glazing.
+        items.remove(under[0])
+        # Extend the glass and the two vertical frame members down to slab.
+        for o in items:
+            name=o["name"]
+            if name==glassname or name.startswith(f"OG_left_Rahmen{i}_"):
+                low=min(v[2] for v in o["v"])
+                high=max(v[2] for v in o["v"])
+                if abs(low-original_sill)<0.015 and high>original_sill+0.10:
+                    o["v"]=[[x,y,floor if abs(z-original_sill)<0.015 else z]
+                            for x,y,z in o["v"]]
+        # Existing bottom frame is at the old sill; move it to slab level.
+        bottom=[o for o in items if o["name"].startswith(f"OG_left_Rahmen{i}_")
+                and abs(min(v[2] for v in o["v"])-original_sill)<0.015
+                and max(v[2] for v in o["v"])<original_sill+0.09]
+        if len(bottom)!=1:raise ValueError("Missing OG gable bottom frame "+glassname)
+        for o in bottom:
+            o["v"]=[[x,y,z+(floor-original_sill)] for x,y,z in o["v"]]
+    return items
+
 def build(master_path,interior_path,output):
     items=json.loads(Path(master_path).read_text(encoding="utf8"))
     groups=Counter(o["group"] for o in items)
@@ -35,6 +82,7 @@ def build(master_path,interior_path,output):
     names=[o["name"] for o in items]
     if len(items)<600 or not required.issubset(groups):
         raise ValueError("Original master incomplete or missing required exterior groups")
+    items=restore_og_left_gable_floor_windows(items)
     items, railing_report=replace_glass_railing(items)
     names=[o["name"] for o in items]
     groups=Counter(o["group"] for o in items)
@@ -396,12 +444,13 @@ def build(master_path,interior_path,output):
             "groups":dict(groups),"railing_update":railing_report,
             "original_repeated_names":repeated,
             "renamed_frame_parts":sum(repeated.values()),
-            "window_policy":"Original exterior windows preserved; V3 window changes pending separate verification.",
+            "window_policy":"Both left OG gable windows extended to slab top z=2.97; other windows unchanged pending room assignment.",
             "source_policy":"No V4/V5 and no V3 exterior geometry used."}
     Path(str(output)+".report.json").write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding="utf8")
     print(f"OK: {len(items)} original exterior + {len(selected)} V3 interior meshes = {len(doc['nodes'])} total")
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Railing:",railing_report)
+    print("Windows: two left OG gable windows restored to slab top z=2.97")
     print("Interior: added KG wall junction fix",gap_name)
     print("Interior: added EG T-junction fix",eg_joint_name)
     print("Interior: OG stair partition replaced with sloped parapet",parapet_name)
