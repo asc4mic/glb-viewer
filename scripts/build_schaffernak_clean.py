@@ -161,6 +161,15 @@ def build(master_path,interior_path,output):
         if any(k in n for k in ("skin","children")):
             raise ValueError("Unsupported skinned or grouped interior mesh")
     viewmap={};accmap={};matmap={};meshmap={}
+    # Uniform porcelain-white finish for interior walls, not floors or stairs.
+    wall_white_material=len(doc["materials"])
+    doc["materials"].append({"name":"Innenwand_Porzellanweiss","doubleSided":True,
+        "pbrMetallicRoughness":{"baseColorFactor":[0.97,0.965,0.95,1.0],
+                               "metallicFactor":0,"roughnessFactor":0.9}})
+    def is_interior_wall(name):
+        return (name.startswith("Innen__") and
+                ("Innenwand" in name or "_Wand_" in name or
+                 "_Sturz" in name or "_Bruestung" in name))
     def view(i):
         if i not in viewmap:
             old=v3["bufferViews"][i];start=old.get("byteOffset",0)
@@ -182,19 +191,24 @@ def build(master_path,interior_path,output):
             if "Texture" in json.dumps(m):raise ValueError("V3 interior texture needs manual merge")
             matmap[i]=len(doc["materials"]);doc["materials"].append(m)
         return matmap[i]
-    def mesh(i):
-        if i not in meshmap:
+    def mesh(i, white_wall=False):
+        # Distinct mesh keys prevent changing a material shared with a floor.
+        key=(i,white_wall)
+        if key not in meshmap:
             m=dict(v3["meshes"][i]);prims=[]
             for original in m["primitives"]:
                 p=dict(original)
                 p["attributes"]={k:acc(v) for k,v in p["attributes"].items()}
                 if "indices" in p:p["indices"]=acc(p["indices"])
-                if "material" in p:p["material"]=mat(p["material"])
+                if white_wall:
+                    p["material"]=wall_white_material
+                elif "material" in p:
+                    p["material"]=mat(p["material"])
                 if "targets" in p:p["targets"]=[{k:acc(v) for k,v in t.items()} for t in p["targets"]]
                 prims.append(p)
             m["primitives"]=prims
-            meshmap[i]=len(doc["meshes"]);doc["meshes"].append(m)
-        return meshmap[i]
+            meshmap[key]=len(doc["meshes"]);doc["meshes"].append(m)
+        return meshmap[key]
     # Reverse EG->OG stair start side by reflecting only the two stair flights
     # about the midpoint of their shared opening (X=4.97 m).
     # This swaps A and B horizontally without changing any tread height,
@@ -222,7 +236,7 @@ def build(master_path,interior_path,output):
         if n["name"] in stair_partition_names:
             continue  # replaced below with a low parapet; keep original V3 intact
         node={k:v for k,v in n.items() if k not in ("children","skin","camera")}
-        node["mesh"]=mesh(n["mesh"])
+        node["mesh"]=mesh(n["mesh"],is_interior_wall(n["name"]))
         if n in stair_steps:
             # Reflection about X=4.97; three.js handles negative-scale winding.
             node["translation"]=[9.94,0.0,0.0]
@@ -268,7 +282,7 @@ def build(master_path,interior_path,output):
     parapet_mat=len(doc["materials"])
     doc["materials"].append({"name":"OG_Stiege_Bruestung_massiv",
         "doubleSided":True,"pbrMetallicRoughness":{
-            "baseColorFactor":[0.83,0.82,0.79,1.0],
+            "baseColorFactor":[0.97,0.965,0.95,1.0],
             "metallicFactor":0,"roughnessFactor":0.9}})
     parapet_name="Innen__OG_Stiege_Bruestung_zwischen_Laeufen"
     mi=len(doc["meshes"])
@@ -296,7 +310,7 @@ def build(master_path,interior_path,output):
     inds=accessor(struct.pack("<"+"I"*len(faces),*faces),5125,"SCALAR",len(faces),target=34963)
     material=len(doc["materials"])
     doc["materials"].append({"name":"KG_Innenwand_Anschluss","doubleSided":True,
-       "pbrMetallicRoughness":{"baseColorFactor":[0.83,0.82,0.79,1.0],
+       "pbrMetallicRoughness":{"baseColorFactor":[0.97,0.965,0.95,1.0],
                               "metallicFactor":0,"roughnessFactor":0.9}})
     mi=len(doc["meshes"])
     doc["meshes"].append({"name":gap_name,"primitives":[{"attributes":{"POSITION":pos},
@@ -442,6 +456,7 @@ def build(master_path,interior_path,output):
     save(output,doc,blob)
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
+            "interior_wall_finish":"Porzellanweiss; named interior wall meshes, lintels and generated infills",
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
             "eg_og_stair_direction":"flights mirrored about X=4.97m; tread elevations unchanged",
@@ -459,6 +474,7 @@ def build(master_path,interior_path,output):
     print("Preserved",sum(repeated.values()),"parts with repeated original names, uniquely renamed")
     print("Railing:",railing_report)
     print("Windows: right OG gable Stefan and bathroom windows restored to slab top z=2.97")
+    print("Interior: wall surfaces, lintels and parapet in porcelain white")
     print("Interior: added KG wall junction fix",gap_name)
     print("Interior: added EG T-junction fix",eg_joint_name)
     print("Interior: OG stair partition replaced with sloped parapet",parapet_name)
