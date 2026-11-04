@@ -6,6 +6,7 @@ import argparse, json, re, struct
 from pathlib import Path
 from collections import Counter
 from balcony_glass_on_slab import replace_glass_railing
+from kg_concrete_winder import add_kg_concrete_winder
 
 def read_glb(path):
     raw=Path(path).read_bytes()
@@ -229,12 +230,20 @@ def build(master_path,interior_path,output):
         if not (3.83<=lo[0]<=5.19 and 4.75<=hi[0]<=6.11 and
                 -6.90<=lo[2]<-5.17 and -6.90<hi[2]<=-5.17):
             raise ValueError("EG-OG stair footprint changed; stair unchanged")
+    # Replace the preliminary KG-EG U-stair (17 treads + landing) with
+    # the 15-riser concrete winder from the construction plan. The OG
+    # stair remains untouched by this replacement.
+    kg_stair_old={n["name"] for _,n in selected if re.fullmatch(
+        r"Innen__Treppe_KG_EG_(?:Lauf_[AB]_Stufe_[0-9]+|Wendepodest)",
+        n["name"])}
+    if len(kg_stair_old)!=18 or "Innen__Treppe_KG_EG_Wendepodest" not in kg_stair_old:
+        raise ValueError("Expected 17 preliminary KG treads and one landing; no replacement")
     stair_partition_names={"Innen__Innenwand_DXF_OG_041","Innen__Innenwand_DXF_OG_026"}
     if not stair_partition_names.issubset(set(chosen)):
         raise ValueError("OG stair partition walls not found; refusing partial modification")
     for _,n in selected:
-        if n["name"] in stair_partition_names:
-            continue  # replaced below with a low parapet; keep original V3 intact
+        if n["name"] in stair_partition_names or n["name"] in kg_stair_old:
+            continue  # replaced below; original V3 source remains untouched
         node={k:v for k,v in n.items() if k not in ("children","skin","camera")}
         node["mesh"]=mesh(n["mesh"],is_interior_wall(n["name"]))
         if n in stair_steps:
@@ -453,10 +462,13 @@ def build(master_path,interior_path,output):
         doc["nodes"].append({"name":name,"mesh":mi})
         doc["scenes"][0]["nodes"].append(ni)
         eg_header_fixes.append(name)
+    kg_stair_report=add_kg_concrete_winder(doc,accessor,set(chosen)|set(names))
     save(output,doc,blob)
     report={"exterior_source":str(master_path),"interior_source":str(interior_path),
             "exterior_meshes":len(items),"interior_meshes":len(selected),
             "interior_wall_finish":"Porzellanweiss; named interior wall meshes, lintels and generated infills",
+            "kg_concrete_winder":kg_stair_report,
+            "replaced_preliminary_kg_stair_meshes":len(kg_stair_old),
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
             "eg_og_stair_direction":"flights mirrored about X=4.97m; tread elevations unchanged",
@@ -475,6 +487,8 @@ def build(master_path,interior_path,output):
     print("Railing:",railing_report)
     print("Windows: right OG gable Stefan and bathroom windows restored to slab top z=2.97")
     print("Interior: wall surfaces, lintels and parapet in porcelain white")
+    print("KG stair: replaced",len(kg_stair_old),"preliminary parts with",
+          kg_stair_report["riser_count"],"concrete winder steps plus oak parquet")
     print("Interior: added KG wall junction fix",gap_name)
     print("Interior: added EG T-junction fix",eg_joint_name)
     print("Interior: OG stair partition replaced with sloped parapet",parapet_name)
