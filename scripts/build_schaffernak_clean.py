@@ -366,11 +366,11 @@ def build(master_path,interior_path,output):
     y0=min(lo[1] for lo,hi in stair_bounds)
     # Parapet follows the actual upper stair flight, not the OG floor:
     # near z0 the tread top is 1.98 m, near z1 it is 2.805 m.
-    # The guard top is therefore about 0.80 m above both tread levels.
-    # Connect its bottom to the 2.70 m-high EG centre wall, avoiding
-    # the former floating section above the lower stair flight.
-    upper_top=3.60
-    lower_top=2.80
+    # The guard top is about 0.90 m above the adjacent treads.
+    # Connect its bottom to the 2.70 m-high EG centre wall.
+    # A solid-oak cap is modeled separately on this sloping upper edge.
+    upper_top=3.70
+    lower_top=2.90
     parapet_bottom=2.70
     if not (4.84<x0<4.87 and 5.10<x1<5.13 and
             -6.46<z0<-6.42 and -5.40<z1<-5.36 and
@@ -398,6 +398,40 @@ def build(master_path,interior_path,output):
     ni=len(doc["nodes"])
     doc["nodes"].append({"name":parapet_name,"mesh":mi})
     doc["scenes"][0]["nodes"].append(ni)
+    # Solid-oak coping / handrail on top of the masonry parapet.
+    # Approximate design dimensions: 40 mm thick, 30 mm side overhang.
+    # The top follows the same slope as the wall; no vertical posts.
+    oak_overhang=0.03
+    oak_thickness=0.04
+    oak_x0=x0-oak_overhang
+    oak_x1=x1+oak_overhang
+    oak_verts=[
+        (oak_x0,lower_top-0.005,z0),(oak_x1,lower_top-0.005,z0),
+        (oak_x1,upper_top-0.005,z1),(oak_x0,upper_top-0.005,z1),
+        (oak_x0,lower_top+oak_thickness,z0),
+        (oak_x1,lower_top+oak_thickness,z0),
+        (oak_x1,upper_top+oak_thickness,z1),
+        (oak_x0,upper_top+oak_thickness,z1),
+    ]
+    oak_flat=[v for vertex in oak_verts for v in vertex]
+    oak_pos=accessor(struct.pack("<"+"f"*len(oak_flat),*oak_flat),5126,"VEC3",8,
+        ([oak_x0,lower_top-0.005,z0],[oak_x1,upper_top+oak_thickness,z1]))
+    oak_inds=accessor(struct.pack("<"+"I"*len(faces),*faces),5125,"SCALAR",len(faces),target=34963)
+    oak_mat=len(doc["materials"])
+    doc["materials"].append({"name":"OG_Stiege_Eichenholz_Abdeckung",
+        "doubleSided":True,"pbrMetallicRoughness":{
+            "baseColorFactor":[0.68,0.49,0.31,1.0],
+            "metallicFactor":0,"roughnessFactor":0.68}})
+    oak_name="Innen__OG_Stiege_Eichenholz_Abdeckung"
+    if oak_name in chosen or oak_name in names:
+        raise ValueError("Duplicate OG oak coping name")
+    oak_mesh=len(doc["meshes"])
+    doc["meshes"].append({"name":oak_name,"primitives":[{
+        "attributes":{"POSITION":oak_pos},"indices":oak_inds,
+        "material":oak_mat,"mode":4}]})
+    oak_node=len(doc["nodes"])
+    doc["nodes"].append({"name":oak_name,"mesh":oak_mesh})
+    doc["scenes"][0]["nodes"].append(oak_node)
     # Plan-safe small KG wall junction: original V3 walls 017 and 002
     # leave a 19 mm horizontal gap where both wall boxes overlap.
     # Add one small infill, without touching openings, other floors or V3.
@@ -569,6 +603,8 @@ def build(master_path,interior_path,output):
             "og_stairwell_cutout":stairwell_report,
             "og_stairwell_floor_edge_panels":len(floor_strips),
             "og_stair_parapet_top_m":[lower_top,upper_top],
+            "og_stair_parapet_oak_cap":{"name":oak_name,"thickness_m":oak_thickness,
+                                         "side_overhang_m":oak_overhang},
             "replaced_preliminary_kg_stair_meshes":len(kg_stair_old),
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
@@ -590,7 +626,7 @@ def build(master_path,interior_path,output):
     print("Interior: wall surfaces, lintels and parapet in porcelain white")
     print("OG slab: opened stairwell",stairwell_report["opening_xy_m"],"with",stairwell_report["replacement_panels"],"panels")
     print("OG stair: matched parquet edge to opening with",len(floor_strips),"strips")
-    print("OG stair: centre parapet follows treads at approx. 80 cm height")
+    print("OG stair: centre masonry parapet approx. 90 cm above treads, with oak cap")
     print("KG stair: replaced",len(kg_stair_old),"preliminary parts with",
           kg_stair_report["riser_count"],"concrete winder steps plus oak parquet")
     print("Interior: added KG wall junction fix",gap_name)
