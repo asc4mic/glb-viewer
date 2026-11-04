@@ -26,6 +26,24 @@ function isInterior(name: string) {
   return name.startsWith("Innen__") || /^(EG|OG)_Kamin_/.test(name);
 }
 
+// In the OG cutaway the staircase is visible all the way down to EG.
+// Keep its lower supporting slab and the actual DXF stairwell walls visible;
+// otherwise the single-floor filter makes the shaft look like a black void
+// and the massive centre parapet appears to float in mid-air.
+const egStairwellWalls = new Set([
+  "Innen__Innenwand_DXF_EG_007",
+  "Innen__Innenwand_DXF_EG_008",
+  "Innen__Innenwand_DXF_EG_009",
+  "Innen__Innenwand_DXF_EG_025",
+  "Innen__Innenwand_DXF_EG_026",
+  "Innen__Innenwand_DXF_EG_027",
+  "Innen__Innenwand_DXF_EG_028",
+  "Innen__Innenwand_DXF_EG_029",
+  "Innen__Innenwand_DXF_EG_030",
+  "Innen__Innenwand_DXF_EG_044",
+  "Innen__Innenwand_DXF_EG_045",
+]);
+
 function InteriorModel({ url, floor, walls, roof, terrain, fireplace }: {
   url: string; floor: Floor; walls: boolean; roof: boolean; terrain: boolean; fireplace: boolean;
 }) {
@@ -46,6 +64,12 @@ function InteriorModel({ url, floor, walls, roof, terrain, fireplace }: {
       // In a single-floor view hide common roof and exterior construction so rooms are visible.
       if (floor !== "ALL" && !partFloor && !isInterior(name) && !/^Treppe_/.test(name)) {
         visible = false;
+      }
+      // V6 OG cutaway: retain only the real EG slab and staircase-adjacent
+      // lower walls, not the rest of the EG rooms. Honor the walls toggle.
+      if (floor === "OG" && url.endsWith("/Schaffernak_Haus_V6.glb")) {
+        if (name === "EG_Decke") visible = true;
+        if (egStairwellWalls.has(name)) visible = walls;
       }
       part.visible = visible;
     });
