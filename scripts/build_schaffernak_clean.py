@@ -90,9 +90,11 @@ def open_og_stairwell(items):
     Exterior master OG_Decke is a single solid cuboid with no stair opening.
     Replace only this cuboid with four adjacent concrete cuboids. Keep the
     original elevation, thickness, material and outer footprint unchanged.
-    Opening from DXF-based stair overlay: x=3.75..6.23, depth=5.05..7.48.
+    Opening follows the inside faces of DXF stairwell side/rear walls,
+    with clearance for the 3.84..6.10 m treads and the 5.19 m top step.
+    Original schematic cutout: x=3.75..6.23, depth=5.05..7.48.
     """
-    opening=(3.75,5.05,6.23,7.48)
+    opening=(3.80,5.12,6.17,7.42)
     slabs=[o for o in items if o["name"]=="OG_Decke"]
     if len(slabs)!=1:raise ValueError("Expected exactly one original OG_Decke")
     slab=slabs[0]
@@ -296,6 +298,51 @@ def build(master_path,interior_path,output):
             node["translation"]=[9.94,0.0,0.0]
             node["scale"]=[-1.0,1.0,1.0]
         i=len(doc["nodes"]);doc["nodes"].append(node);doc["scenes"][0]["nodes"].append(i)
+    # The original V3 oak floor finish already has a 3.75..6.23 m,
+    # 5.05..7.48 m hole. Add four matching thin parquet strips around
+    # the narrower, DXF-aligned opening so no bare concrete rim remains.
+    floor_nodes=[n for _,n in selected if re.fullmatch(
+        r"Innen__Bodenbelag_OG_Platzhalter_[1-4]",n["name"])]
+    if len(floor_nodes)!=4:
+        raise ValueError("Expected four original OG parquet floor panels")
+    floor_mats=[]
+    for n in floor_nodes:
+        p=v3["meshes"][n["mesh"]]["primitives"]
+        if len(p)!=1 or "material" not in p:
+            raise ValueError("Unexpected OG floor finish primitives")
+        floor_mats.append(p[0]["material"])
+    if len(set(floor_mats))!=1:
+        raise ValueError("OG floor finish materials differ; no infill")
+    finish_mat=mat(floor_mats[0])
+    # Bounds in house x/depth coordinates, before glTF depth inversion.
+    floor_strips=[
+        (3.75,5.05,3.80,7.48),
+        (6.17,5.05,6.23,7.48),
+        (3.80,5.05,6.17,5.12),
+        (3.80,7.42,6.17,7.48),
+    ]
+    floor_faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
+                 1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
+    for part,(fx0,fd0,fx1,fd1) in enumerate(floor_strips,1):
+        name=f"Innen__Bodenbelag_OG_Treppenrand_{part}"
+        if name in chosen or name in names:
+            raise ValueError("Duplicate stairwell finish "+name)
+        verts=[(fx0,2.975,-fd0),(fx1,2.975,-fd0),
+               (fx1,2.975,-fd1),(fx0,2.975,-fd1),
+               (fx0,2.993,-fd0),(fx1,2.993,-fd0),
+               (fx1,2.993,-fd1),(fx0,2.993,-fd1)]
+        flat=[c for v in verts for c in v]
+        pos=accessor(struct.pack("<"+"f"*len(flat),*flat),5126,"VEC3",8,
+                     ([fx0,2.975,-fd1],[fx1,2.993,-fd0]))
+        idx=accessor(struct.pack("<"+"I"*len(floor_faces),*floor_faces),
+                     5125,"SCALAR",len(floor_faces),target=34963)
+        mi=len(doc["meshes"])
+        doc["meshes"].append({"name":name,"primitives":[{
+            "attributes":{"POSITION":pos},"indices":idx,
+            "material":finish_mat,"mode":4}]})
+        ni=len(doc["nodes"])
+        doc["nodes"].append({"name":name,"mesh":mi})
+        doc["scenes"][0]["nodes"].append(ni)
     # OG central partition between stair flights A and B:
     # Original walls 041 and 026 reach the ceiling (Y=5.52).
     # Replace both by one low solid parapet, retaining their combined footprint.
@@ -315,24 +362,27 @@ def build(master_path,interior_path,output):
     z0=min(lo[2] for lo,hi in stair_bounds)
     z1=max(hi[2] for lo,hi in stair_bounds)
     y0=min(lo[1] for lo,hi in stair_bounds)
-    # Sloping parapet along stair flight B. At the upper end (z1)
-    # it rises 0.80 m above the OG floor (reduced from 1.00 m);
-    # toward the lower end (z0) it follows the stair gradient.
-    # Preserve OG floor baseline and existing stair opening.
-    upper_top=3.80
-    lower_top=3.00
+    # Parapet follows the actual upper stair flight, not the OG floor:
+    # near z0 the tread top is 1.98 m, near z1 it is 2.805 m.
+    # The guard top is therefore about 0.80 m above both tread levels.
+    # Connect its bottom to the 2.70 m-high EG centre wall, avoiding
+    # the former floating section above the lower stair flight.
+    upper_top=3.60
+    lower_top=2.80
+    parapet_bottom=2.70
     if not (4.84<x0<4.87 and 5.10<x1<5.13 and
             -6.46<z0<-6.42 and -5.40<z1<-5.36 and
             2.99<y0<3.01 and all(abs(hi[1]-5.52)<.02 for lo,hi in stair_bounds)):
         raise ValueError("OG stair partition footprint changed; refusing to alter geometry")
-    verts=[(x0,y0,z0),(x1,y0,z0),(x1,y0,z1),(x0,y0,z1),
+    verts=[(x0,parapet_bottom,z0),(x1,parapet_bottom,z0),
+           (x1,parapet_bottom,z1),(x0,parapet_bottom,z1),
            (x0,lower_top,z0),(x1,lower_top,z0),
            (x1,upper_top,z1),(x0,upper_top,z1)]
     faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
            1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
     flat=[v for vertex in verts for v in vertex]
     pos=accessor(struct.pack("<"+"f"*len(flat),*flat),5126,"VEC3",8,
-                 ([x0,y0,z0],[x1,upper_top,z1]))
+                 ([x0,parapet_bottom,z0],[x1,upper_top,z1]))
     inds=accessor(struct.pack("<"+"I"*len(faces),*faces),5125,"SCALAR",len(faces),target=34963)
     parapet_mat=len(doc["materials"])
     doc["materials"].append({"name":"OG_Stiege_Bruestung_massiv",
@@ -515,6 +565,8 @@ def build(master_path,interior_path,output):
             "interior_wall_finish":"Porzellanweiss; named interior wall meshes, lintels and generated infills",
             "kg_concrete_winder":kg_stair_report,
             "og_stairwell_cutout":stairwell_report,
+            "og_stairwell_floor_edge_panels":len(floor_strips),
+            "og_stair_parapet_top_m":[lower_top,upper_top],
             "replaced_preliminary_kg_stair_meshes":len(kg_stair_old),
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
@@ -535,6 +587,8 @@ def build(master_path,interior_path,output):
     print("Windows: right OG gable Stefan and bathroom windows restored to slab top z=2.97")
     print("Interior: wall surfaces, lintels and parapet in porcelain white")
     print("OG slab: opened stairwell",stairwell_report["opening_xy_m"],"with",stairwell_report["replacement_panels"],"panels")
+    print("OG stair: matched parquet edge to opening with",len(floor_strips),"strips")
+    print("OG stair: centre parapet follows treads at approx. 80 cm height")
     print("KG stair: replaced",len(kg_stair_old),"preliminary parts with",
           kg_stair_report["riser_count"],"concrete winder steps plus oak parquet")
     print("Interior: added KG wall junction fix",gap_name)
