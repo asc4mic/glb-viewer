@@ -48,11 +48,19 @@ def check(path):
         assert abs(lo[1]-2.975)<.01 and abs(hi[1]-2.993)<.01,(name,lo,hi)
     parapet=nodes["Innen__OG_Stiege_Bruestung_zwischen_Laeufen"]
     lo,hi=bounds(doc,parapet)
-    assert abs(lo[1]-2.70)<.02 and abs(hi[1]-3.60)<.02,(lo,hi)
+    assert abs(lo[1]-2.70)<.02 and abs(hi[1]-3.70)<.02,(lo,hi)
+    oak=nodes["Innen__OG_Stiege_Eichenholz_Abdeckung"]
+    oak_lo,oak_hi=bounds(doc,oak)
+    assert abs(oak_lo[1]-2.895)<.02 and abs(oak_hi[1]-3.74)<.02,(oak_lo,oak_hi)
+    assert oak_lo[0]<lo[0] and oak_hi[0]>hi[0],(oak_lo,oak_hi)
+    oak_primitive=doc["meshes"][oak["mesh"]]["primitives"][0]
+    oak_material=doc["materials"][oak_primitive["material"]]
+    assert oak_material["name"]=="OG_Stiege_Eichenholz_Abdeckung"
     print("OK: OG opening 2.37 x 2.30 m, four concrete panels")
     print("OK: four matching parquet edge strips")
     print("OK: 18 EG-OG treads and landing preserved")
-    print("OK: centre parapet approx. 80 cm above stair treads")
+    print("OK: centre parapet approx. 90 cm above stair treads")
+    print("OK: solid oak cap 40 mm thick with 30 mm side overhang")
 
 
 if __name__=="__main__":
