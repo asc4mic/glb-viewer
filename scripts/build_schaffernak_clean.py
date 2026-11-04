@@ -305,15 +305,17 @@ def build(master_path,interior_path,output):
         r"Innen__Bodenbelag_OG_Platzhalter_[1-4]",n["name"])]
     if len(floor_nodes)!=4:
         raise ValueError("Expected four original OG parquet floor panels")
-    floor_mats=[]
+    floor_colors=[]
     for n in floor_nodes:
         p=v3["meshes"][n["mesh"]]["primitives"]
-        if len(p)!=1 or "material" not in p:
-            raise ValueError("Unexpected OG floor finish primitives")
-        floor_mats.append(p[0]["material"])
-    if len(set(floor_mats))!=1:
-        raise ValueError("OG floor finish materials differ; no infill")
-    finish_mat=mat(floor_mats[0])
+        if len(p)!=1 or "COLOR_0" not in p[0]["attributes"]:
+            raise ValueError("Unexpected OG floor vertex-color primitives")
+        floor_colors.append(p[0]["attributes"]["COLOR_0"])
+    if len(set(floor_colors))!=1:
+        raise ValueError("OG floor colors differ; no infill")
+    finish_color=acc(floor_colors[0])
+    if doc["accessors"][finish_color]["count"]!=8:
+        raise ValueError("OG floor color accessor not compatible with eight-vertex box")
     # Bounds in house x/depth coordinates, before glTF depth inversion.
     floor_strips=[
         (3.75,5.05,3.80,7.48),
@@ -338,8 +340,8 @@ def build(master_path,interior_path,output):
                      5125,"SCALAR",len(floor_faces),target=34963)
         mi=len(doc["meshes"])
         doc["meshes"].append({"name":name,"primitives":[{
-            "attributes":{"POSITION":pos},"indices":idx,
-            "material":finish_mat,"mode":4}]})
+            "attributes":{"POSITION":pos,"COLOR_0":finish_color},
+            "indices":idx,"mode":4}]})
         ni=len(doc["nodes"])
         doc["nodes"].append({"name":name,"mesh":mi})
         doc["scenes"][0]["nodes"].append(ni)
