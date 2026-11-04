@@ -84,6 +84,50 @@ def restore_og_right_gable_floor_windows(items):
     return items
 
 
+def open_og_stairwell(items):
+    """Cut the verified stairwell envelope out of the full OG concrete slab.
+
+    Exterior master OG_Decke is a single solid cuboid with no stair opening.
+    Replace only this cuboid with four adjacent concrete cuboids. Keep the
+    original elevation, thickness, material and outer footprint unchanged.
+    Opening from DXF-based stair overlay: x=3.75..6.23, depth=5.05..7.48.
+    """
+    opening=(3.75,5.05,6.23,7.48)
+    slabs=[o for o in items if o["name"]=="OG_Decke"]
+    if len(slabs)!=1:raise ValueError("Expected exactly one original OG_Decke")
+    slab=slabs[0]
+    xs=[v[0] for v in slab["v"]]
+    ys=[v[1] for v in slab["v"]]
+    zs=[v[2] for v in slab["v"]]
+    x0,x1=min(xs),max(xs)
+    y0,y1=min(ys),max(ys)
+    z0,z1=min(zs),max(zs)
+    if (len(slab["v"])!=8 or len(slab["f"])!=12 or
+        any(abs(v-t)>.02 for v,t in zip((x0,x1,y0,y1,z0,z1),
+                (0.01,11.11035,0.01,7.81,2.77,2.97)))):
+        raise ValueError("Original OG slab geometry changed; refusing cutout")
+    xa,ya,xb,yb=opening
+    if not (x0<xa<xb<x1 and y0<ya<yb<y1):
+        raise ValueError("Stair opening outside OG slab")
+    # Four nonoverlapping rectangular solid regions around the opening.
+    rectangles=[(x0,y0,xa,y1),(xb,y0,x1,y1),
+                (xa,y0,xb,ya),(xa,yb,xb,y1)]
+    faces=[[0,2,1],[0,3,2],[4,5,6],[4,6,7],
+           [0,1,5],[0,5,4],[1,2,6],[1,6,5],
+           [2,3,7],[2,7,6],[3,0,4],[3,4,7]]
+    panels=[]
+    for i,(px0,py0,px1,py1) in enumerate(rectangles,1):
+        v=[[px0,py0,z0],[px1,py0,z0],[px1,py1,z0],[px0,py1,z0],
+           [px0,py0,z1],[px1,py0,z1],[px1,py1,z1],[px0,py1,z1]]
+        panels.append({**slab,"name":f"OG_Decke_Treppenoeffnung_Teil_{i}",
+                       "v":v,"f":faces})
+    result=[o for o in items if o is not slab]
+    result.extend(panels)
+    return result,{"opening_xy_m":opening,"original_slab":"OG_Decke",
+                   "replacement_panels":len(panels),
+                   "slab_z_m":[z0,z1],"scope":"OG slab only"}
+
+
 def build(master_path,interior_path,output):
     items=json.loads(Path(master_path).read_text(encoding="utf8"))
     groups=Counter(o["group"] for o in items)
@@ -91,6 +135,7 @@ def build(master_path,interior_path,output):
     names=[o["name"] for o in items]
     if len(items)<600 or not required.issubset(groups):
         raise ValueError("Original master incomplete or missing required exterior groups")
+    items,stairwell_report=open_og_stairwell(items)
     items=restore_og_right_gable_floor_windows(items)
     items, railing_report=replace_glass_railing(items)
     names=[o["name"] for o in items]
@@ -469,6 +514,7 @@ def build(master_path,interior_path,output):
             "exterior_meshes":len(items),"interior_meshes":len(selected),
             "interior_wall_finish":"Porzellanweiss; named interior wall meshes, lintels and generated infills",
             "kg_concrete_winder":kg_stair_report,
+            "og_stairwell_cutout":stairwell_report,
             "replaced_preliminary_kg_stair_meshes":len(kg_stair_old),
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
@@ -488,6 +534,7 @@ def build(master_path,interior_path,output):
     print("Railing:",railing_report)
     print("Windows: right OG gable Stefan and bathroom windows restored to slab top z=2.97")
     print("Interior: wall surfaces, lintels and parapet in porcelain white")
+    print("OG slab: opened stairwell",stairwell_report["opening_xy_m"],"with",stairwell_report["replacement_panels"],"panels")
     print("KG stair: replaced",len(kg_stair_old),"preliminary parts with",
           kg_stair_report["riser_count"],"concrete winder steps plus oak parquet")
     print("Interior: added KG wall junction fix",gap_name)
