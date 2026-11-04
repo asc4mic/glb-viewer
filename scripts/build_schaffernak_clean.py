@@ -271,9 +271,10 @@ def build(master_path,interior_path,output):
     z1=max(hi[2] for lo,hi in stair_bounds)
     y0=min(lo[1] for lo,hi in stair_bounds)
     # Sloping parapet along stair flight B. At the upper end (z1)
-    # it rises 1.00 m above the OG floor; toward the lower end (z0)
-    # the top descends with the stair gradient. Preserve OG floor baseline.
-    upper_top=4.00
+    # it rises 0.80 m above the OG floor (reduced from 1.00 m);
+    # toward the lower end (z0) it follows the stair gradient.
+    # Preserve OG floor baseline and existing stair opening.
+    upper_top=3.80
     lower_top=3.00
     if not (4.84<x0<4.87 and 5.10<x1<5.13 and
             -6.46<z0<-6.42 and -5.40<z1<-5.36 and
