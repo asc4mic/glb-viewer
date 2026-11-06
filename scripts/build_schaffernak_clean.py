@@ -383,12 +383,12 @@ def build(master_path,interior_path,output):
     y0=min(lo[1] for lo,hi in stair_bounds)
     # Parapet follows the actual upper stair flight, not the OG floor:
     # near z0 the tread top is 1.98 m, near z1 it is 2.805 m.
-    # The sloped masonry guard meets the horizontal landing parapet
-    # flush at its upper end (90 cm above OG finished floor = 3.87 m).
-    # Oak caps meet at the same height as in the selected reference image.
-    # Connect the bottom to the 2.70 m-high EG centre wall.
-    upper_top=3.87
-    lower_top=2.97
+    # Sloped masonry guard alongside the upper stair flight. Its
+    # top follows the treads; do not extend a transverse wall across
+    # the walking line to reach the separate OG landing parapet.
+    # The exact connection in the reference image still needs alignment.
+    upper_top=3.70
+    lower_top=2.90
     parapet_bottom=2.70
     if not (4.84<x0<4.87 and 5.10<x1<5.13 and
             -6.46<z0<-6.42 and -5.40<z1<-5.36 and
@@ -491,27 +491,6 @@ def build(master_path,interior_path,output):
          landing_z0-landing_oak_overhang),
         (landing_x1+landing_oak_overhang,landing_top+landing_oak_thickness,
          landing_z1+landing_oak_overhang),oak_mat)
-    # The two guards previously ended ~1.05 m apart. Close that gap
-    # with a perpendicular masonry return at the OG landing. The return
-    # terminates at the sloped guard, not across the stair walking line.
-    # Its oak top butts into the sloped oak cap at equal top elevation.
-    if not (landing_x1<x0 and abs(landing_z1-z1)<0.05 and
-            abs(upper_top-landing_top)<0.001):
-        raise ValueError("OG stair landing-to-slope junction changed")
-    return_z0=z1-0.04
-    return_z1=z1+0.09
-    return_masonry_name=add_landing_parapet_box(
-        "Innen__OG_Stiegenoeffnung_Bruestung_Eckanschluss",
-        (landing_x1-0.03,landing_bottom,return_z0),
-        (x0,landing_top,return_z1),wall_white_material)
-    # 1 mm mating overlap avoids a light leak without overlapping the
-    # two cap top surfaces (which would cause Z-fighting).
-    return_oak_name=add_landing_parapet_box(
-        "Innen__OG_Stiegenoeffnung_Eichenholz_Eckanschluss",
-        (landing_x1-landing_oak_overhang,landing_top-0.005,
-         return_z0-landing_oak_overhang),
-        (oak_x0+0.001,landing_top+landing_oak_thickness,
-         return_z1+landing_oak_overhang),oak_mat)
     # Plan-safe small KG wall junction: original V3 walls 017 and 002
     # leave a 19 mm horizontal gap where both wall boxes overlap.
     # Add one small infill, without touching openings, other floors or V3.
@@ -689,9 +668,6 @@ def build(master_path,interior_path,output):
                 "masonry":landing_masonry_name,"oak_cap":landing_oak_name,
                 "wall_top_m":landing_top,"height_above_og_floor_m":0.90,
                 "oak_thickness_m":landing_oak_thickness},
-            "og_stair_to_landing_join":{"masonry":return_masonry_name,
-                "oak_cap":return_oak_name,"joint_top_m":landing_top+landing_oak_thickness,
-                "style":"flush L-shaped joint; no railing posts"},
             "replaced_preliminary_kg_stair_meshes":len(kg_stair_old),
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
@@ -715,7 +691,6 @@ def build(master_path,interior_path,output):
     print("OG stair: matched parquet edge to opening with",len(floor_strips),"strips")
     print("OG stair: centre masonry parapet approx. 90 cm above treads, with oak cap")
     print("OG stair: left landing wall OG_040 shortened to 90 cm with oak cap")
-    print("OG stair: sloped parapet and landing parapet joined flush with oak corner cap")
     print("KG stair: replaced",len(kg_stair_old),"preliminary parts with",
           kg_stair_report["riser_count"],"concrete winder steps plus oak parquet")
     print("Interior: added KG wall junction fix",gap_name)
