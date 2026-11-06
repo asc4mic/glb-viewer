@@ -57,7 +57,7 @@ function InteriorModel({ url, floor, walls, roof, terrain, fireplace }: {
       const name = part.name;
       const partFloor = floorOf(name);
       let visible = floor === "ALL" || !partFloor || partFloor === floor;
-      if (!walls && (/_Wand|Innenwand|Bruestung|Eichenholzabdeckung_Links|OG_Stiege_Eichenholz_Abdeckung|Kniestock|^Giebel_/.test(name))) visible = false;
+      if (!walls && (/_Wand|Innenwand|Bruestung|Eichenholzabdeckung_Markiert|OG_Stiege_Eichenholz_Abdeckung|Kniestock|^Giebel_/.test(name))) visible = false;
       if (!roof && isRoof(name)) visible = false;
       if (!terrain && isTerrain(name)) visible = false;
       if (!fireplace && /^(EG|OG)_Kamin_/.test(name)) visible = false;
