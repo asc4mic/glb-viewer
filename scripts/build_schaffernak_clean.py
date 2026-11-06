@@ -286,27 +286,11 @@ def build(master_path,interior_path,output):
     if len(kg_stair_old)!=18 or "Innen__Treppe_KG_EG_Wendepodest" not in kg_stair_old:
         raise ValueError("Expected 17 preliminary KG treads and one landing; no replacement")
     stair_partition_names={"Innen__Innenwand_DXF_OG_041","Innen__Innenwand_DXF_OG_026"}
-    # Separate from the central stair-flight parapet: the long OG wall
-    # directly LEFT of the stairwell is the wall marked red in the photo.
-    # DXF wall 040: x=3.67..3.80, depth=5.35..7.42, height=3.00..5.52.
-    landing_parapet_original="Innen__Innenwand_DXF_OG_040"
-    if not (stair_partition_names|{landing_parapet_original}).issubset(set(chosen)):
-        raise ValueError("OG stairwell walls not found; refusing partial modification")
-    landing_source=next(n for _,n in selected if n["name"]==landing_parapet_original)
-    if any(k in landing_source for k in ("matrix","translation","rotation","scale")):
-        raise ValueError("OG landing wall transformed; refusing unsafe replacement")
-    landing_prims=v3["meshes"][landing_source["mesh"]]["primitives"]
-    if len(landing_prims)!=1:
-        raise ValueError("OG landing wall is not a single mesh")
-    landing_bounds=v3["accessors"][landing_prims[0]["attributes"]["POSITION"]]
-    expected_landing_lo=[3.67,3.00,-7.42]
-    expected_landing_hi=[3.80,5.52,-5.35]
-    if any(abs(landing_bounds["min"][i]-expected_landing_lo[i])>0.015 or
-           abs(landing_bounds["max"][i]-expected_landing_hi[i])>0.015
-           for i in range(3)):
-        raise ValueError("OG landing wall bounds changed; refusing unsafe replacement")
+    if not stair_partition_names.issubset(set(chosen)):
+        raise ValueError("OG stair partition walls not found; refusing partial modification")
+    # OG_040 is NOT the requested parapet: preserve the original full-height wall.
     for _,n in selected:
-        if n["name"] in stair_partition_names or n["name"] in kg_stair_old or n["name"]==landing_parapet_original:
+        if n["name"] in stair_partition_names or n["name"] in kg_stair_old:
             continue  # replaced below; original V3 source remains untouched
         node={k:v for k,v in n.items() if k not in ("children","skin","camera")}
         node["mesh"]=mesh(n["mesh"],is_interior_wall(n["name"]))
@@ -450,47 +434,6 @@ def build(master_path,interior_path,output):
     oak_node=len(doc["nodes"])
     doc["nodes"].append({"name":oak_name,"mesh":oak_mesh})
     doc["scenes"][0]["nodes"].append(oak_node)
-    # Red-marked OG wall 040, directly left of the stairwell.
-    # Replace the full-height original by a 90 cm solid masonry parapet,
-    # measured from OG finished floor at 2.97 m. It remains a straight
-    # horizontal wall, unlike the sloped central stair-flight partition.
-    landing_x0,landing_x1=expected_landing_lo[0],expected_landing_hi[0]
-    landing_z0,landing_z1=expected_landing_lo[2],expected_landing_hi[2]
-    landing_bottom=3.00  # original raw DXF wall base, 3 cm above slab
-    landing_top=3.87     # 90 cm above finished OG floor (2.97 m)
-    landing_oak_thickness=0.04
-    landing_oak_overhang=0.025
-    def add_landing_parapet_box(name,lo,hi,mat_id):
-        if name in chosen or name in names:
-            raise ValueError("Duplicate OG stair landing part: "+name)
-        ax,ay,az=lo
-        bx,by,bz=hi
-        vv=[(ax,ay,az),(bx,ay,az),(bx,ay,bz),(ax,ay,bz),
-            (ax,by,az),(bx,by,az),(bx,by,bz),(ax,by,bz)]
-        ff=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
-            1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]
-        position=accessor(struct.pack("<"+"f"*24,*[c for v in vv for c in v]),
-            5126,"VEC3",8,([ax,ay,az],[bx,by,bz]))
-        indices=accessor(struct.pack("<"+"I"*len(ff),*ff),
-            5125,"SCALAR",len(ff),target=34963)
-        mesh_id=len(doc["meshes"])
-        doc["meshes"].append({"name":name,"primitives":[{
-            "attributes":{"POSITION":position},"indices":indices,
-            "material":mat_id,"mode":4}]})
-        node_id=len(doc["nodes"])
-        doc["nodes"].append({"name":name,"mesh":mesh_id})
-        doc["scenes"][0]["nodes"].append(node_id)
-        return name
-    landing_masonry_name=add_landing_parapet_box(
-        "Innen__OG_Stiegenoeffnung_Bruestungsmauer_Links",
-        (landing_x0,landing_bottom,landing_z0),
-        (landing_x1,landing_top,landing_z1),wall_white_material)
-    landing_oak_name=add_landing_parapet_box(
-        "Innen__OG_Stiegenoeffnung_Eichenholzabdeckung_Links",
-        (landing_x0-landing_oak_overhang,landing_top-0.005,
-         landing_z0-landing_oak_overhang),
-        (landing_x1+landing_oak_overhang,landing_top+landing_oak_thickness,
-         landing_z1+landing_oak_overhang),oak_mat)
     # Plan-safe small KG wall junction: original V3 walls 017 and 002
     # leave a 19 mm horizontal gap where both wall boxes overlap.
     # Add one small infill, without touching openings, other floors or V3.
@@ -664,10 +607,6 @@ def build(master_path,interior_path,output):
             "og_stair_parapet_top_m":[lower_top,upper_top],
             "og_stair_parapet_oak_cap":{"name":oak_name,"thickness_m":oak_thickness,
                                          "side_overhang_m":oak_overhang},
-            "og_landing_left_wall":{"replaced_original":landing_parapet_original,
-                "masonry":landing_masonry_name,"oak_cap":landing_oak_name,
-                "wall_top_m":landing_top,"height_above_og_floor_m":0.90,
-                "oak_thickness_m":landing_oak_thickness},
             "replaced_preliminary_kg_stair_meshes":len(kg_stair_old),
             "interior_junction_fixes":[gap_name,eg_joint_name],
             "og_stair_partition_replaced":sorted(stair_partition_names),
@@ -690,7 +629,7 @@ def build(master_path,interior_path,output):
     print("OG slab: opened stairwell",stairwell_report["opening_xy_m"],"with",stairwell_report["replacement_panels"],"panels")
     print("OG stair: matched parquet edge to opening with",len(floor_strips),"strips")
     print("OG stair: centre masonry parapet approx. 90 cm above treads, with oak cap")
-    print("OG stair: left landing wall OG_040 shortened to 90 cm with oak cap")
+    print("OG stair: original full-height wall OG_040 preserved")
     print("KG stair: replaced",len(kg_stair_old),"preliminary parts with",
           kg_stair_report["riser_count"],"concrete winder steps plus oak parquet")
     print("Interior: added KG wall junction fix",gap_name)
